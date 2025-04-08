@@ -20,3 +20,10 @@ info.get('shortName', 'Falta de información'),
         'Sector': info.get('sector', 'Falta de información'),
         'Industria': info.get('industria', 'Falta de información')
         }
+    except Exception as e:
+        return {
+            'Nombre': 'Error',
+            'País': 'Error',
+            'Sector': 'Error',
+            'Error': str(e)
+        }
