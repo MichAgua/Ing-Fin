@@ -10,7 +10,7 @@ st.title('The Financial Analyst')
 
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL')
 
-def get_company_info(ticker)
+def get_company_info(ticker):
     try:
         info = ticker.info
         return{
