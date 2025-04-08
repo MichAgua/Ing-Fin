@@ -14,7 +14,7 @@ def get_company_info(ticker):
     try:
         info = ticker.info
         return{
-            'Nombre'
+            'Nombre':
 info.get('shortName', 'Falta de información'),
         'País': info.get('country', 'Falta de información')
         'Sector': info.get('sector', 'Falta de información')
