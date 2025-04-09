@@ -172,10 +172,6 @@ if symbol:
             st.markdown(str(interpretacion_pe))
 
         with col8:
-            price_to_book = info['Price to Book']
-            interpretacion_pb = interpretar_price_to_book(price_to_book)
-            st.markdown(f"**Price to Book:** {price_to_book}")
-            st.markdown(str(interpretacion_pb))
             pb = info['Price to Book']
             st.markdown(f"**Price to Book:** {pb}")
             st.markdown(interpretar_price_to_book(pb))
