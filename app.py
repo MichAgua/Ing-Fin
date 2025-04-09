@@ -9,6 +9,10 @@ st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",la
 st.title('The Financial Analyst, The best in the World')
 
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL')
+if symbol:
+    info = get_company_info(yf.Ticker(symbol))
+    for key, value in info.items():
+        st.markdown(f"**{key}**: {value}")
 
 def get_company_info(ticker):
     try:
@@ -29,4 +33,6 @@ info.get('shortName', 'Falta de información'),
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return{}
+    
+    st.write('Aplicación Creada para el analisis financiero avanzado utilizando Yahoo Finance')
     
