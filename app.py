@@ -5,11 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
-
-st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
-symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
-
 def get_company_info(ticker):
     try:
         info = ticker.info
@@ -29,6 +24,12 @@ def get_company_info(ticker):
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
     
+
+st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
+
+st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
+symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
+
 info = get_company_info(ticker)
 logo_url = ticker.info.get("logo_url", None)
     
