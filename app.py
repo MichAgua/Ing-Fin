@@ -73,7 +73,7 @@ def interpretar_price_to_book(pb):
         return "Bajo (posible oportunidad de inversion o problemas)"
     elif 1 <= pb <= 3:
         return "Rango Razonable"
-    else
+    else:
         return "Alto (se paga una prima por crecimiento/intangibles)"
     
 if symbol:
