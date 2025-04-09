@@ -54,6 +54,28 @@ def formato_dinero(valor):
     except:
         return "N/A"
     
+def interpretar_forward_pe(pe):
+    if pe is None or pe == 'Falta de información':
+        return "N/A"
+    elif pe < 10:
+        return "Muy bajo (posible infravaloración o riesgo)"
+    elif 10 <= pe <= 20:
+        return "Rango Saludable"
+    elif 20 < pe <= 40:
+        return "Expectatias altas"
+    else:
+        return "Muy alto (hay gran riesgo si no cumple expectativas)"
+
+def interpretar_price_to_book(pb)
+    if pb is None or pb == 'Falta de información':
+        return "N/A"
+    elif pb <1:
+        return "Bajo (posible oportunidad de inversion o problemas)"
+    elif 1 <= pb <= 3:
+        return "Rango Razonable"
+    else
+        return "Alto (se paga una prima por crecimiento/intangibles)"
+    
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
@@ -109,14 +131,18 @@ if symbol:
         with col7:
             st.markdown(f"**Forward PE:** {info['Forward PE']}")
             st.markdown(
-                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas, dependiendo de su sector. <10 - Esta infravalorada o enfrenta riesgos. 10-20 - Rango saludable. >20 - Expectativas de crecimiento altas. >40 Muy alta expectativa (riesgo alto). </div",
-            unsafe_allow_html=True)
+                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas, dependiendo de su sector.</div",
+                interpretar_forward_pe(info['Forward PE']),
+            unsafe_allow_html=True
+            )
 
         with col8:
             st.markdown(f"**Price to Book:** {info['Price to Book']}")
             st.markdown(
                 "<div style='text-align: center; font size 12px; '>Relación entre precio de mercado y valor contable</div",
-            unsafe_allow_html=True)
+                interpretar_price_to_book(info['Price to Book']),
+            unsafe_allow_html=True
+            )
 
         with col9:
             st.markdown(f"**Market Cap:** {formato_dinero(info['Market Cap'])}")
