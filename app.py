@@ -64,7 +64,7 @@ def interpretar_forward_pe(pe):
     elif 10 <= pe <= 20:
         return "Rango Saludable"
     elif 20 < pe <= 40:
-        return "Expectatias altas"
+        return "Expectativas altas"
     else:
         return "Muy alto (hay gran riesgo si no cumple expectativas)"
 
