@@ -134,7 +134,7 @@ if symbol:
                 "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
             unsafe_allow_html=True)
 
-    elif seccion == "Grafico de Precios Historicos":
+    elif seccion == "Gráfico de Precios Historicos":
         st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
         st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
         hist = ticker.history(period="5y")
