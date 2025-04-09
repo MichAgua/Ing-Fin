@@ -109,7 +109,7 @@ if symbol:
         with col7:
             st.markdown(f"**Forward PE:** {info['Forward PE']}")
             st.markdown(
-                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas</div",
+                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas, dependiendo de su sector. <10 - Esta infravalorada o enfrenta riesgos. 10-20 - Rango saludable. >20 - Expectativas de crecimiento altas. >40 Muy alta expectativa (riesgo alto). </div",
             unsafe_allow_html=True)
 
         with col8:
