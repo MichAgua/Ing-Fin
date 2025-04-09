@@ -3,6 +3,7 @@ import yfinance as yf
 import seaborn as sns
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
@@ -68,7 +69,7 @@ import seaborn as sns
 
 fig, ax = plt.subplots(figsize=(10, 5))
 sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
-ax.set_title(f"Precio historico de cierre ajusto - {symobol}", fontsize=14)
+ax.set_title(f"Precio historico de cierre ajusto - {symbol}", fontsize=14)
 ax.set_xlabel("Fecha")
 ax.set_ylabel("Precio ($)")
 ax.tick_params(axis='x', rotation=45)
