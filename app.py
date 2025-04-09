@@ -168,7 +168,7 @@ if symbol:
 
         st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
 
-    elif seccion == "Volatilidad Historica":
+    elif seccion == "Volatilidad Histórica":
         st.markdown("### Volatilidad historica (riesgo)")
         st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
 
@@ -178,7 +178,7 @@ if symbol:
         st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
         st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
 
-    elif seccion == "Simulacion de Monte Carlo":
+    elif seccion == "Simulación de Monte Carlo":
         st.markdown("### Simulación de Monte Carlo")
         st.markdown("""
         Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
