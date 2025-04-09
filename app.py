@@ -72,6 +72,7 @@ if symbol:
 )
 
     if seccion == "Información Basica":
+        st.markdown("### Información Basica")
         col_logo, col_nombre = st.columns([1, 5])
         with col_logo:
             if logo_url:
@@ -133,78 +134,79 @@ if symbol:
                 "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
             unsafe_allow_html=True)
 
-    elif seccion == "Industria y Descripción":
+    elif seccion == "Grafico de Precios Historicos":
         st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
         st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
         hist = ticker.history(period="5y")
 
-import seaborn as sns
+        fig, ax = plt.subplots(figsize=(6, 3))
+        sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
+        ax.set_title(f"Precio Historico de Cierre - {symbol}", fontsize=14)
+        ax.set_xlabel("Fecha")
+        ax.set_ylabel("Precio ($)")
+        ax.tick_params(axis='x', rotation=45)
+        ax.grid(True)
 
-fig, ax = plt.subplots(figsize=(6, 3))
-sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
-ax.set_title(f"Precio Historico de Cierre - {symbol}", fontsize=14)
-ax.set_xlabel("Fecha")
-ax.set_ylabel("Precio ($)")
-ax.tick_params(axis='x', rotation=45)
-ax.grid(True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            st.pyplot(fig)
 
-col1, col2, col3 = st.columns([1, 2, 1])
-with col2:
-    st.pyplot(fig)
+    elif seccion == "Rendimientos CAGR":
+        st.markdown("### Rendimientos Anualizados (CAGR)")
+        st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
 
-st.markdown("### Rendimientos Anualizados (CAGR)")
-st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
+        cagr_1 = calcular_cagr(hist, 1)
+        cagr_3 = calcular_cagr(hist, 3)
+        cagr_5 = calcular_cagr(hist, 5)
 
-cagr_1 = calcular_cagr(hist, 1)
-cagr_3 = calcular_cagr(hist, 3)
-cagr_5 = calcular_cagr(hist, 5)
+        df_cagr = pd.DataFrame({
+            "Periodo": ["1 año", "3 años", "5 años"],
+            "Rendimiento (%)": [cagr_1, cagr_3, cagr_5]
+        })
+        df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
+        st.dataframe(df_cagr, use_container_width=True)
 
-df_cagr = pd.DataFrame({
-    "Periodo": ["1 año", "3 años", "5 años"],
-    "Rendimiento (%)": [cagr_1, cagr_3, cagr_5]
-})
-df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
-st.dataframe(df_cagr, use_container_width=True)
+    st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
 
-st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
+    elif seccion == "Volatilidad Historica":
+        st.markdown("### Volatilidad historica (riesgo)")
+        st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
 
-st.markdown("### Volatilidad historica (riesgo)")
-st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
+        retornos = hist["Close"].pct_change().dropna()
+        volatilidad = retornos.std() * np.sqrt(252)
 
-retornos = hist["Close"].pct_change().dropna()
-volatilidad = retornos.std() * np.sqrt(252)
+        st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
+        st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
 
-st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
-st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
+    elif seccion == "Simulacion de Monte Carlo"
+        st.markdown("### Simulación de Monte Carlo")
+        st.markdown("""
+        Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
+        Sirve para visualizar escenarios de riesgo y retorno. 
+        """)
 
-st.markdown("### Simulación de Monte Carlo")
-st.markdown("""
-Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
-Sirve para visualizar escenarios de riesgo y retorno. 
-""")
+        num_simulaciones = 100
+        dias = 252
 
-num_simulaciones = 100
-dias = 252
+        ultimo_precio = hist["Close"].iloc[-1]
+        media_retornos = retornos.mean()
+        std_retornos = retornos.std()
 
-ultimo_precio = hist["Close"].iloc[-1]
-media_retornos = retornos.mean()
-std_retornos = retornos.std()
+        simulaciones = np.zeros((dias, num_simulaciones))
 
-simulaciones = np.zeros((dias, num_simulaciones))
+        for i in range(num_simulaciones):
+            precios = [ultimo_precio]
+            for d in range(1, dias):
+                drift = media_retornos - 0.5 *std_retornos**2
+                shock = np.random.normal(loc=0, scale=std_retornos)
+                precio = precios[-1] * np.exp(drift + shock)
+                precios.append(precio)
+            simulaciones[:, i] = precios
 
-for i in range(num_simulaciones):
-    precios = [ultimo_precio]
-    for d in range(1, dias):
-        drift = media_retornos - 0.5 *std_retornos**2
-        shock = np.random.normal(loc=0, scale=std_retornos)
-        precio = precios[-1] * np.exp(drift + shock)
-        precios.append(precio)
-    simulaciones[:, i] = precios
+        fig_mc, ax_mc = plt.subplots(figsize=(8,4))
+        ax_mc.plot(simulaciones)
+        ax_mc.set_title(f"Simulación de Monte Carlo de precios futuros - {symbol}")
+        ax_mc.set_ylabel("Precio estimado ($)")
+        ax_mc.grid(True)
 
-fig_mc, ax_mc = plt.subplots(figsize=(8,4))
-ax_mc.plot(simulaciones)
-ax_mc.set_title(f"Simulación de Monte Carlo de precios futuros - {symbol}")
-ax_mc.set_ylabel("Precio estimado ($)")
-ax_mc.grid(True)
-
-st.pyplot(fig_mc)
+        st.pyplot(fig_mc)
