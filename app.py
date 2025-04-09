@@ -138,9 +138,9 @@ elif seccion == "Indicadores Financieros":
         unsafe_allow_html=True)
 
 elif seccion == "Industria y Descripción":
-st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
-st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
-hist = ticker.history(period="5y")
+    st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
+    st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
+    hist = ticker.history(period="5y")
 
 import seaborn as sns
 
