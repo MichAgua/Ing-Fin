@@ -166,7 +166,7 @@ if symbol:
         df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
         st.dataframe(df_cagr, use_container_width=True)
 
-    st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
+        st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
 
     elif seccion == "Volatilidad Historica":
         st.markdown("### Volatilidad historica (riesgo)")
