@@ -67,10 +67,39 @@ hist = ticker.history(period="5y")
 
 import seaborn as sns
 
-fig, ax = plt.subplots(figsize=(10, 5))
+fig, ax = plt.subplots(figsize=(6, 3))
 sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
-ax.set_title(f"Precio historico de cierre ajusto - {symbol}", fontsize=14)
+ax.set_title(f"Precio Historico de Cierre - {symbol}", fontsize=14)
 ax.set_xlabel("Fecha")
 ax.set_ylabel("Precio ($)")
 ax.tick_params(axis='x', rotation=45)
-st.pyplot(fig)
+ax.grid(True)
+
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.pyplot(fig)
+
+st.markdown("### Rendimientos Anualizados (CAGR)")
+st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
+
+cagr_1 = calcular_cagr(hist, 1)
+cagr_3 = calcular_cagr(hist, 3)
+cagr_5 = calcular_cagr(hist, 5)
+
+df_cagr = pd.DataFrame({
+    "Periodo": ["1 año", "3 años", "5 años"],
+    "Rendimiento (%)": [cagr_1, cagr_3, cagr_5]
+})
+df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
+st.dataframe(df_cagr, use_container_width=True)
+
+st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
+
+st.markdown("### Volatilidad historica (riesgo)")
+st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
+
+retornos = hist["Close"].pct_change().dropna()
+volatilidad = retornos.std() * np.sqrt(252)
+
+st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
+st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
