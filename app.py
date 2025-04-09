@@ -17,7 +17,7 @@ def get_company_info(ticker):
         'Nombre':info.get('shortName', 'Falta de información'),
         'País': info.get('country', 'Falta de información'),
         'Sector': info.get('sector', 'Falta de información'),
-        'Industria': info.get('industria', 'Falta de información'),
+        'Industria': info.get('industry', 'Falta de información'),
         'Descripción': info.get('longBusinessSummary', 'Falta de información'),
         'Beta': info.get('beta', 'Falta de información'),
         'Forward PE': info.get('forwardPE', 'Falta de información'),
