@@ -133,20 +133,16 @@ if symbol:
             unsafe_allow_html=True)
 
         with col7:
-            st.markdown(f"**Forward PE:** {info['Forward PE']}")
-            st.markdown(
-                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas, dependiendo de su sector.</div",
-                interpretar_forward_pe(info['Forward PE']),
-            unsafe_allow_html=True
-            )
+            forward_pe = info['Forward PE']
+            interpretacion_pe = interpretar_forward_pe(forward_pe)
+            st.markdown(f"**Forward PE:** {forward_pe}")
+            st.markdown(str(interpretacion_pe))
 
         with col8:
-            st.markdown(f"**Price to Book:** {info['Price to Book']}")
-            st.markdown(
-                "<div style='text-align: center; font size 12px; '>Relación entre precio de mercado y valor contable</div",
-                interpretar_price_to_book(info['Price to Book']),
-            unsafe_allow_html=True
-            )
+            price_to_book = info['Price to Book']
+            interpretacion_pb = interpretar_price_to_book(price_to_book)
+            st.markdown(f"**Price to Book:** {price_to_book}")
+            st.markdown(str(interpretacion_pb))
 
         with col9:
             st.markdown(f"**Market Cap:** {formato_dinero(info['Market Cap'])}")
