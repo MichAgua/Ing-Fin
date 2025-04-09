@@ -29,9 +29,6 @@ st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",la
 
 st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
-
-info = get_company_info(ticker)
-logo_url = ticker.info.get("logo_url", None)
     
 def calcular_cagr(precios, años):
     try:
@@ -57,6 +54,7 @@ def formato_dinero(valor):
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
+    logo_url = ticker.info.get("logo_url", None)
     hist = ticker.history(period="5y")
 
     seccion = st.radio(
