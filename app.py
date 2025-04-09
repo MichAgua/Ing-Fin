@@ -7,7 +7,7 @@ import pandas as pd
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
-st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allowed_html=True)
+st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL')
 
 def get_company_info(ticker):
@@ -47,6 +47,9 @@ if symbol:
     col6, col7, col8, col9, col10 = st.columns(5)
     col6.markdown(f"**Beta:** {info['Beta']}")
     col7.markdown(f"**Forward PE:** {info['Forward PE']}")
-    col8.markdown()
+    col8.markdown(f"**Price to Book:** {info['Price to Book']}")
+    col9.markdown(f"**Market Cap:** {info['Market Cap']}")
+    col10.markdown(f"**Dividend Yield:** {info['Dividend Yield']}")
+
                 
     
