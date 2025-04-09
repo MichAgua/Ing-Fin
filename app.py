@@ -178,7 +178,7 @@ if symbol:
         st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
         st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
 
-    elif seccion == "Simulacion de Monte Carlo"
+    elif seccion == "Simulacion de Monte Carlo":
         st.markdown("### Simulación de Monte Carlo")
         st.markdown("""
         Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
