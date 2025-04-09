@@ -80,6 +80,39 @@ def interpretar_price_to_book(pb):
     else:
         return "Alto (se paga una prima por crecimiento/intangibles)"
     
+pb_sector_avg = {
+    "Technology": 8.0,
+    "Financial Services": 1.3,
+    "Industrials": 2.0,
+    "Consumer Defensive": 3.0,
+    "Consumer Cyclical": 4.0,
+    "Healthcare": 4.0,
+    "Energy": 1.5,
+    "Utilities": 1.2,
+    "Basic Materials": 1.8,
+    "Communication Services": 2.5,
+    "Real Estate": 1.4,
+    "Falta de información": None
+}
+
+def comparar_pb_sector(pb, sector):
+    try:
+        pb = float(pb)
+        sector_pb = pb_sector_avg.get(sector, None)
+
+        if sector_pb is None:
+            return "No hay promedio disponible para el sector"
+
+        diferencia = pb - sector_pb
+        if diferencia < -0.5:
+            return f"Bajo vs. su sector (prom: {sector_pb}) – Podría estar infravalorada"
+        elif -0.5 <= diferencia <= 0.5:
+            return f"En línea con su sector (prom: {sector_pb})"
+        else:
+            return f"Alto vs. su sector (prom: {sector_pb}) – Mercado espera crecimiento o intangibles"
+    except:
+        return "Información no disponible"
+    
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
@@ -143,6 +176,11 @@ if symbol:
             interpretacion_pb = interpretar_price_to_book(price_to_book)
             st.markdown(f"**Price to Book:** {price_to_book}")
             st.markdown(str(interpretacion_pb))
+            pb = info['Price to Book']
+            st.markdown(f"**Price to Book:** {pb}")
+            st.markdown(interpretar_price_to_book(pb))
+            st.markdown(comparar_pb_sector(pb, info['Sector']))
+
 
         with col9:
             st.markdown(f"**Market Cap:** {formato_dinero(info['Market Cap'])}")
