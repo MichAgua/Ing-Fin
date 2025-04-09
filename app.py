@@ -5,6 +5,21 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+def caja_palantir(texto):
+    st.markdown(
+        f"""
+        <div style='
+            background-color: #E5E7EB;
+            padding: 1rem;
+            border-left: 4px solid #2C3E50;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            font-size: 15px;
+        '>
+            {texto}
+        </div>
+        """, unsafe_allow_html=True)
+
 def get_company_info(ticker):
     try:
         info = ticker.info
