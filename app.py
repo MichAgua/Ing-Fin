@@ -120,7 +120,7 @@ if symbol:
             unsafe_allow_html=True)
 
         with col9:
-            st.markdown(f"**Market Cap:** {info['Market Cap']}")
+            st.markdown(f"**Market Cap:** {formato_dinero(info['Market Cap'])}")
             st.markdown(
                 "<div style='text-align: center; font size 12px; '>Valor total de mercado de la empresa</div",
             unsafe_allow_html=True)
@@ -133,7 +133,7 @@ if symbol:
             dr_texto = f"${round(dr, 2)} por acción" if isinstance(dr, (float, int)) else "No Disponible"
 
             st.markdown(f"**Dividend Yield:** {dy_pct}")
-            st.markdown(f"**Dividendo por acción:** {dr_texto}")
+            st.markdown(f"**Dividendo por acción:** {dy}")
             st.markdown(
                 "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
             unsafe_allow_html=True)
