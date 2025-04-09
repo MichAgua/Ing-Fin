@@ -19,7 +19,7 @@ def get_company_info(ticker):
         'Price to Book': info.get('priceToBook', 'Falta de información'),
         'Market Cap': info.get('marketCap', 'Falta de información'),
         'Dividend Yield': info.get('dividendYield', 'Falta de información'),
-        'Dividendo por Acción': info.get(dividendRate', "Falta de información'),
+        'Dividendo por Acción': info.get('dividendRate', "Falta de información')
         'Logo': info.get('logo_url', None)
         }
     except Exception as e:
