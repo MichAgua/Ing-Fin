@@ -55,9 +55,11 @@ def formato_dinero(valor):
         return "N/A"
     
 def interpretar_forward_pe(pe):
-    if pe is None or pe == 'Falta de información':
-        return "N/A"
-    elif pe < 10:
+    try:
+        pe = float(pe)
+    except:
+        return "No Disponible"
+    if pe < 10:
         return "Muy bajo (posible infravaloración o riesgo)"
     elif 10 <= pe <= 20:
         return "Rango Saludable"
@@ -67,9 +69,11 @@ def interpretar_forward_pe(pe):
         return "Muy alto (hay gran riesgo si no cumple expectativas)"
 
 def interpretar_price_to_book(pb):
-    if pb is None or pb == 'Falta de información':
-        return "N/A"
-    elif pb <1:
+    try:
+        pb == float(pb)
+    except:
+        return "No Disponible"
+    if pb <1:
         return "Bajo (posible oportunidad de inversion o problemas)"
     elif 1 <= pb <= 3:
         return "Rango Razonable"
