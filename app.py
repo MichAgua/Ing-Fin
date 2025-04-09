@@ -70,7 +70,7 @@ def interpretar_forward_pe(pe):
 
 def interpretar_price_to_book(pb):
     try:
-        pb == float(pb)
+        pb = float(pb)
     except:
         return "No Disponible"
     if pb <1:
