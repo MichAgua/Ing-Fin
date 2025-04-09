@@ -66,7 +66,7 @@ def interpretar_forward_pe(pe):
     else:
         return "Muy alto (hay gran riesgo si no cumple expectativas)"
 
-def interpretar_price_to_book(pb)
+def interpretar_price_to_book(pb):
     if pb is None or pb == 'Falta de información':
         return "N/A"
     elif pb <1:
