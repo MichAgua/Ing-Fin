@@ -7,7 +7,7 @@ import pandas as pd
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
-t.markdown("""
+st.markdown("""
     <style>
         body {
             background-color: #f0f8ff;

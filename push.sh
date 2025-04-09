@@ -1,9 +1,5 @@
-#!/bin/bash
-
-if [ -n "$(git status --porcelain)" ]; then
-  git add .
-  git commit -m "Auto update"
-  git push
-else
-  echo "No changes to commit."
-fi
+git init                  # Only if it's not already a git repo
+git remote add origin https://github.com/MichAgua/Ing-Fin
+git add .
+git commit -m "initial commit"
+git push -u origin main
