@@ -18,12 +18,15 @@ def get_company_info(ticker):
 info.get('shortName', 'Falta de información'),
         'País': info.get('country', 'Falta de información'),
         'Sector': info.get('sector', 'Falta de información'),
-        'Industria': info.get('industria', 'Falta de información')
+        'Industria': info.get('industria', 'Falta de información'),
+        'Descripción': info.get('longBusinessSummary', 'Falta de información'),
+        'Beta': info.get('beta', 'Falta de información'),
+        'Forward PE': info.get('forwardPE', 'Falta de información'),
+        'Price to Book': info.get('priceToBook', 'Falta de información'),
+        'Market Cap': info.get('marketCap', 'Falta de información'),
+        'Dividend Yield': info.get('dividendYield', 'Falta de información')
         }
     except Exception as e:
-        return {
-            'Nombre': 'Error',
-            'País': 'Error',
-            'Sector': 'Error',
-            'Error': str(e)
-        }
+        st.error(f'Error al obtener la información de la emisora: {e}')
+        return{}
+    
