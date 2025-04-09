@@ -5,9 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-info = get_company_info(ticker)
-logo_url = ticker.info.get("logo_url", None)
-
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
@@ -31,6 +28,9 @@ def get_company_info(ticker):
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
+    
+info = get_company_info(ticker)
+logo_url = ticker.info.get("logo_url", None)
     
 def calcular_cagr(precios, años):
     try:
