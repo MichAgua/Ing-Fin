@@ -25,7 +25,6 @@ def get_company_info(ticker):
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
-    
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
@@ -58,7 +57,7 @@ def formato_dinero(valor):
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
-    logo_url = ticker.info.get("logo_url", None)
+    logo_url = ticker.info.get("Logo", None)
     hist = ticker.history(period="5y")
 
     seccion = st.radio(
