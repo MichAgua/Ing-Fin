@@ -6,7 +6,7 @@ import pandas as pd
 
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
-st.title('The Financial Analyst')
+st.title('The Financial Analyst - The worlds best')
 
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL')
 
