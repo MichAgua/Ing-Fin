@@ -64,12 +64,12 @@ st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
 st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
 hist = ticker.history(period="5y")
 
-    import seaborn as sns
+import seaborn as sns
 
-    fig, ax = plt.subplots(figsize=(10, 5))
-    sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
-    ax.set_title(f"Precio historico de cierre ajusto - {symobol}", fontsize=14)
-    ax.set_xlabel("Fecha")
-    ax.set_ylabel("Precio ($)")
-    ax.tick_params(axis='x', rotation=45)
-    st.pyplot(fig)
+fig, ax = plt.subplots(figsize=(10, 5))
+sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
+ax.set_title(f"Precio historico de cierre ajusto - {symobol}", fontsize=14)
+ax.set_xlabel("Fecha")
+ax.set_ylabel("Precio ($)")
+ax.tick_params(axis='x', rotation=45)
+st.pyplot(fig)
