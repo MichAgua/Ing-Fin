@@ -18,7 +18,9 @@ def get_company_info(ticker):
         'Forward PE': info.get('forwardPE', 'Falta de información'),
         'Price to Book': info.get('priceToBook', 'Falta de información'),
         'Market Cap': info.get('marketCap', 'Falta de información'),
-        'Dividend Yield': info.get('dividendYield', 'Falta de información')
+        'Dividend Yield': info.get('dividendYield', 'Falta de información'),
+        'Dividendo por Acción': info.get(dividendRate', "Falta de información'),
+        'Logo': info.get('logo_url', None)
         }
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
@@ -40,7 +42,9 @@ def calcular_cagr(precios, años):
     
 def formato_dinero(valor):
     try:
-        if valor >= 1e12:
+        if valor >= 1e15:
+            return f"{valor / 1e16: .2f} trillones USD"
+        elif valor >= 1e12:
             return f"{valor / 1e12: .2f} billones USD"
         elif valor >= 1e9:
             return f"{valor / 1e9: .2f} mil millones USD"
@@ -185,6 +189,7 @@ if symbol:
         Sirve para visualizar escenarios de riesgo y retorno. 
         """)
 
+        retornos = hist["Close"].pct_change().dropna()
         num_simulaciones = 100
         dias = 252
 
