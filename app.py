@@ -71,75 +71,72 @@ if symbol:
     horizontal=True
 )
 
-if seccion == "Información Basica":
-    st.markdown("### Información Básica")
+    if seccion == "Información Basica":
+        col_logo, col_nombre = st.columns([1, 5])
+        with col_logo:
+            if logo_url:
+                st.image(logo_url, width=60)
+            else:
+                st.markdown("Logo no disponible")
 
-    col_logo, col_nombre = st.columns([1, 5])
+        with col_nombre:
+            st.markdown(f"$$ {info['Nombre']}")
 
-    with col_logo:
-        if logo_url:
-            st.image(logo_url, width=60)
-        else:
-            st.markdown("Logo no disponible")
+        col1, col2, col3 = st.columns(3)
+        col1.markdown(f"**Nombre:** {info['País']}")
+        col2.markdown(f"**País:** {info['Sector']}")
+        col3.markdown(f"**Ticker:** {symbol}")
 
-    with col_nombre:
-        st.markdown(f"$$ {info['Nombre']}")
-
-    col1, col2, col3 = st.columns(3)
-    col1.markdown(f"**Nombre:** {info['País']}")
-    col2.markdown(f"**País:** {info['Sector']}")
-    col3.markdown(f"**Ticker:** {symbol}")
-
-elif seccion == "Industria y Descripción":
-    st.markdown("### Industria y Descripción")
-    col4, col5 = st.columns([1, 2])
-    col4.markdown(f"**Industria:** {info['Industria']}")
-    col5.markdown(f"**Descripción:** {info['Descripción']}")
+    elif seccion == "Industria y Descripción":
+        st.markdown("### Industria y Descripción")
+        col4, col5 = st.columns([1, 2])
+        col4.markdown(f"**Industria:** {info['Industria']}")
+        col5.markdown(f"**Descripción:** {info['Descripción']}")
     
-elif seccion == "Indicadores Financieros":    
-    st.markdown ("### Indicadores Financieros")
-    col6, col7, col8, col9, col10 = st.columns(5)
-    with col6:
-        st.markdown(f"**Beta:** {info['Beta']}")
-        st.markdown(
-            "<div style='text-align: center; font size 12px; '>Mide la volatilidad comparada con el mercado (1.0 = promedio)</div",
-        unsafe_allow_html=True)
+    elif seccion == "Indicadores Financieros":    
+        st.markdown ("### Indicadores Financieros")
+        col6, col7, col8, col9, col10 = st.columns(5)
+        with col6:
+            st.markdown(f"**Beta:** {info['Beta']}")
+            st.markdown(
+                "<div style='text-align: center; font size 12px; '>Mide la volatilidad comparada con el mercado (1.0 = promedio)</div",
+            unsafe_allow_html=True)
 
-    with col7:
-        st.markdown(f"**Forward PE:** {info['Forward PE']}")
-        st.markdown(
-            "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas</div",
-        unsafe_allow_html=True)
+        with col7:
+            st.markdown(f"**Forward PE:** {info['Forward PE']}")
+            st.markdown(
+                "<div style='text-align: center; font size 12px; '>Relación entre precio actual y ganancias futuas estimadas</div",
+            unsafe_allow_html=True)
 
-    with col8:
-        st.markdown(f"**Price to Book:** {info['Price to Book']}")
-        st.markdown(
-            "<div style='text-align: center; font size 12px; '>Relación entre precio de mercado y valor contable</div",
-        unsafe_allow_html=True)
+        with col8:
+            st.markdown(f"**Price to Book:** {info['Price to Book']}")
+            st.markdown(
+                "<div style='text-align: center; font size 12px; '>Relación entre precio de mercado y valor contable</div",
+            unsafe_allow_html=True)
 
-    with col9:
-        st.markdown(f"**Market Cap:** {info['Market Cap']}")
-        st.markdown(
-            "<div style='text-align: center; font size 12px; '>Valor total de mercado de la empresa</div",
-        unsafe_allow_html=True)
+        with col9:
+            st.markdown(f"**Market Cap:** {info['Market Cap']}")
+            st.markdown(
+                "<div style='text-align: center; font size 12px; '>Valor total de mercado de la empresa</div",
+            unsafe_allow_html=True)
 
-    with col10:
-        dy = info['Dividend Yield']
-        dr = info.get('dividendRate', None)
+        with col10:
+            dy = info['Dividend Yield']
+            dr = info.get('dividendRate', None)
 
-        dy_pct = f"{round(dy * 100, 2)}%" if isinstance(dy, (float, int)) else dy
-        dr_texto = f"${round(dr, 2)} por acción" if isinstance(dr, (float, int)) else "No Disponible"
+            dy_pct = f"{round(dy * 100, 2)}%" if isinstance(dy, (float, int)) else dy
+            dr_texto = f"${round(dr, 2)} por acción" if isinstance(dr, (float, int)) else "No Disponible"
 
-        st.markdown(f"**Dividend Yield:** {dy_pct}")
-        st.markdown(f"**Dividendo por acción:** {dr_texto}")
-        st.markdown(
-            "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
-        unsafe_allow_html=True)
+            st.markdown(f"**Dividend Yield:** {dy_pct}")
+            st.markdown(f"**Dividendo por acción:** {dr_texto}")
+            st.markdown(
+                "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
+            unsafe_allow_html=True)
 
-elif seccion == "Industria y Descripción":
-    st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
-    st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
-    hist = ticker.history(period="5y")
+    elif seccion == "Industria y Descripción":
+        st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
+        st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
+        hist = ticker.history(period="5y")
 
 import seaborn as sns
 
