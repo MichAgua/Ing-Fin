@@ -62,7 +62,7 @@ if symbol:
 
 st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
 st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
-    hist = ticker.history(period="5y")
+hist = ticker.history(period="5y")
 
     import seaborn as sns
 
