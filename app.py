@@ -103,3 +103,35 @@ volatilidad = retornos.std() * np.sqrt(252)
 
 st.markdown(f"**Volatilidad anualizada:** {round(volatilidad * 100, 2)}%")
 st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
+
+st.markdown("### Simulación de Monte Carlo")
+st.markdown("""
+Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
+Sirve para visualizar escenarios de riesgo y retorno. 
+""")
+
+num_simulaciones = 100
+dias = 252
+
+ultimo_precio = hist["Close"].iloc[-1]
+media_retornos = retornos.mean()
+std_retornos = retornos.std()
+
+simulaciones = np.zeros((dias, num_simulaciones))
+
+for i in range(num_simulaciones):
+    precios = [ultimo_precio]
+    for d in range(1, dias):
+        drift = media_retornos - 0.5 *std_retornos**2
+        shock = np.random.normal(loc=0, scale=std_retornos)
+        precio = precios[-1] * np.exp(drift + shock)
+        precios.append(precio)
+    simulaciones[:, i] = precios
+
+fig_mc, ax_mc = plt.subplots(figsize=(8,4))
+ax_mc.plot(simulaciones)
+ax_mc.set_title(f"Simulación de Monte Carlo de precios futuros - {symbol}")
+ax_mc.set_ylabel("Precio estimado ($)")
+ax_mc.grid(True)
+
+st.pyplot(fig_mc)
