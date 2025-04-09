@@ -8,7 +8,7 @@ import pandas as pd
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
-symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL')
+symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
 
 def get_company_info(ticker):
     try:
@@ -29,8 +29,17 @@ def get_company_info(ticker):
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
     
+def calcular_cagr(precios, años):
+    try:
+        inicio = precios["Close"].iloc[-252*años]
+        fin = precios["Close"].iloc[-1]
+        return ((fin / inicio) ** (1 / años)) - 1
+    except:
+        return np.nan
+    
 if symbol:
-    info = get_company_info(yf.Ticker(symbol))
+    ticker = yf.Ticker(symbol)
+    info = get_company_info(ticker)
 
     st.markdown("### Información Básica")
     col1, col2, col3 = st.columns(3)
@@ -51,5 +60,16 @@ if symbol:
     col9.markdown(f"**Market Cap:** {info['Market Cap']}")
     col10.markdown(f"**Dividend Yield:** {info['Dividend Yield']}")
 
-                
-    
+st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
+st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
+    hist = ticker.history(period="5y")
+
+    import seaborn as sns
+
+    fig, ax = plt.subplots(figsize=(10, 5))
+    sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
+    ax.set_title(f"Precio historico de cierre ajusto - {symobol}", fontsize=14)
+    ax.set_xlabel("Fecha")
+    ax.set_ylabel("Precio ($)")
+    ax.tick_params(axis='x', rotation=45)
+    st.pyplot(fig)
