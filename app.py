@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 info = get_company_info(ticker)
-logo_url = ticker.info.get("logo_url", None")
+logo_url = ticker.info.get("logo_url", None)
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
