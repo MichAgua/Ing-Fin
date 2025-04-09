@@ -84,9 +84,9 @@ if symbol:
             st.markdown(f"$$ {info['Nombre']}")
 
         col1, col2, col3 = st.columns(3)
-        col1.markdown(f"**Nombre:** {info['País']}")
-        col2.markdown(f"**País:** {info['Sector']}")
-        col3.markdown(f"**Ticker:** {symbol}")
+        col1.markdown(f"**Nombre:** {info['Nombre']}")
+        col2.markdown(f"**País:** {info['País']}")
+        col3.markdown(f"**Sector:** {info['Sector']}")
 
     elif seccion == "Industria y Descripción":
         st.markdown("### Industria y Descripción")
