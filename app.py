@@ -114,13 +114,10 @@ def comparar_pb_sector(pb, sector):
         return "Información no disponible"
     
 if symbol:
-    if validar_ticker(symbol):
-        ticker = yf.Ticker(symbol)
-        info = get_company_info(ticker)
-        logo_url = ticker.info.get("Logo", None)
-        hist = ticker.history(period="5y")
-    else:
-        st.error("Ticker invalido, por favor revise e intente de nuevo")
+    ticker = yf.Ticker(symbol)
+    info = get_company_info(ticker)
+    logo_url = ticker.info.get("Logo", None)
+    hist = ticker.history(period="5y")
 
     seccion = st.radio(
     "Selecciona lo que te gustaria visualizar:",
