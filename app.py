@@ -133,7 +133,7 @@ if symbol:
             dr_texto = f"${round(dr, 2)} por acción" if isinstance(dr, (float, int)) else "No Disponible"
 
             st.markdown(f"**Dividend Yield:** {dy_pct}")
-            st.markdown(f"**Dividendo por acción:** {dy}")
+            st.markdown(f"**Dividendo por acción:$** {dy}")
             st.markdown(
                 "<div style='text-align: center; font size 12px; '>Porcentaje del precio pagado como dividendo anual</div",
             unsafe_allow_html=True)
