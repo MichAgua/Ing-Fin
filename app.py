@@ -27,6 +27,7 @@ symbol = st.text_input('Ingrese el ticker de la emisora')
 if symbol != 'PLTR':
     st.error("Lo sentimos, esta app solo jala con Palantir")
     st.stop
+st.success("Gracias por su comprensión!")
 
 st.markdown("""
     <style>
