@@ -395,5 +395,5 @@ st.markdown("""
             z-index: 100;
         }
     </style>
-    <img src="https://seekvectorlogo.com/palantir-vector-logo-svg/" class="logo-palantir">
+    <img src="<a href="https://seekvectorlogo.com/palantir-vector-logo-svg/" target="_blank"><img src="https://seekvectorlogo.com/wp-content/uploads/2018/01/palantir-vector-logo.png" /></a>" class="logo-palantir">
 """, unsafe_allow_html=True)
