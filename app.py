@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
-# Tema oscuro estilo Palantir Technologies
+
 st.markdown("""
     <style>
         /* Fondo principal oscuro */
@@ -44,6 +44,14 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        html, body, [class*="css"] {
+            font-family: 'Share Tech Mono', monospace;
+        }
+    </style>
+""", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
 
 def caja_palantir(texto):
@@ -60,6 +68,33 @@ def caja_palantir(texto):
             {texto}
         </div>
         """, unsafe_allow_html=True)
+    
+st.markdown("""
+    <style>
+        .logo-palantir {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 50px;
+            opacity: 0.15;
+            z-index: 100;
+        }
+    </style>
+    <img src="https://companieslogo.com/img/orig/PLTR-0d2569b8.png" class="logo-palantir">
+""", unsafe_allow_html=True)
+
+if symbol == 'HACK':
+    st.markdown("<h1 style='color: lime;'>🔐 Sistema Palantir Infiltrado</h1>", unsafe_allow_html=True)
+    st.markdown("""
+        <style>
+            body {
+                background-color: black !important;
+                color: lime !important;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+    st.balloons()
+    st.stop()
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 if symbol and symbol != 'PLTR':
@@ -302,6 +337,7 @@ if symbol:
     elif seccion == "Rendimientos CAGR":
         st.markdown("### Rendimientos Anualizados (CAGR)")
         st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
+        st.markdown("Este cálculo considera el precio al inicio y al final del periodo para determinar el rendimiento anualizado")
 
         cagr_1 = calcular_cagr(hist, 1)
         cagr_3 = calcular_cagr(hist, 3)
@@ -335,7 +371,7 @@ if symbol:
 
         retornos = hist["Close"].pct_change().dropna()
         num_simulaciones = 100
-        dias = 252
+        dias = st.slider("Selecciona el número de días a simular", 30, 365, 252)
 
         ultimo_precio = hist["Close"].iloc[-1]
         media_retornos = retornos.mean()
