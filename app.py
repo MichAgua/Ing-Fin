@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
+
 symbol = st.text_input('Ingrese el ticker de la emisora')
 if symbol != 'PLTR':
     st.error("Lo sentimos, esta app solo jala con Palantir")
@@ -59,8 +61,6 @@ def get_company_info(ticker):
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
-
-st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
