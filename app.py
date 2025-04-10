@@ -68,28 +68,11 @@ def caja_palantir(texto):
             {texto}
         </div>
         """, unsafe_allow_html=True)
-    
-st.markdown("""
-    <style>
-        .logo-palantir {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            width: 50px;
-            opacity: 0.15;
-            z-index: 100;
-        }
-    </style>
-    <img src="https://companieslogo.com/img/orig/PLTR-0d2569b8.png" class="logo-palantir">
-""", unsafe_allow_html=True)
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
-if symbol and symbol != 'PLTR':
-    st.markdown("<h4 style='color: red;'> Ticker invalido. Por favor revise e intente de nuevo. Esta app solo funciona con el ticker <code>PLTR</code> (Palantir Technologies).</hr>", unsafe_allow_html=True)
-    st.stop()
 
 if symbol == 'HACK':
-    st.markdown("<h1 style='color: lime;'>🔐 Sistema Palantir Infiltrado</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: lime;'>Sistema Palantir Infiltrado</h1>", unsafe_allow_html=True)
     st.markdown("""
         <style>
             .main {
@@ -101,6 +84,9 @@ if symbol == 'HACK':
         </style>
     """, unsafe_allow_html=True)
     st.balloons()
+    st.stop()
+if symbol and symbol != 'PLTR':
+    st.markdown("<h4 style='color: red;'> Ticker invalido. Por favor revise e intente de nuevo. Esta app solo funciona con el ticker <code>PLTR</code> (Palantir Technologies).</hr>", unsafe_allow_html=True)
     st.stop()
 
 st.markdown("""
@@ -397,3 +383,17 @@ if symbol:
         ax_mc.grid(True)
 
         st.pyplot(fig_mc)
+
+st.markdown("""
+    <style>
+        .logo-palantir {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 50px;
+            opacity: 0.15;
+            z-index: 100;
+        }
+    </style>
+    <img src="https://companieslogo.com/img/orig/PLTR-0d2569b8.png" class="logo-palantir">
+""", unsafe_allow_html=True)
