@@ -63,7 +63,6 @@ def get_company_info(ticker):
         return {}
 
 st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
-symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
     
 def calcular_cagr(precios, años):
     try:
