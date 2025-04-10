@@ -390,10 +390,10 @@ st.markdown("""
             position: fixed;
             right: 20px;
             bottom: 20px;
-            width: 50px;
+            width: 60px;
             opacity: 0.15;
             z-index: 100;
         }
     </style>
-    <img src="https://companieslogo.com/img/orig/PLTR-0d2569b8.png" class="logo-palantir">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Palantir_Technologies_logo.svg" class="logo-palantir">
 """, unsafe_allow_html=True)
