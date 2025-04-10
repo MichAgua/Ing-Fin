@@ -6,6 +6,44 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
+# Tema oscuro estilo Palantir Technologies
+st.markdown("""
+    <style>
+        /* Fondo principal oscuro */
+        .main {
+            background-color: #1E1E1E;
+        }
+        /* Encabezados y texto */
+        h1, h2, h3, h4, h5, h6, p, div {
+            color: #FFFFFF !important;
+        }
+        /* Input de texto (ticker) */
+        input {
+            background-color: #2C3E50 !important;
+            color: white !important;
+            border: 1px solid #4B5563;
+        }
+        /* Botones y radio buttons */
+        .stButton>button {
+            background-color: #2C3E50;
+            color: white;
+            border: 1px solid #4B5563;
+        }
+        .stRadio > div {
+            color: white;
+        }
+        /* Tablas */
+        .stDataFrame {
+            background-color: #2C3E50;
+            color: white;
+        }
+        /* Cuadros y contenedores */
+        .block-container {
+            padding-top: 2rem;
+            background-color: #1E1E1E;
+        }
+    </style>
+""", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
 
 def caja_palantir(texto):
