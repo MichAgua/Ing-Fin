@@ -5,20 +5,39 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def caja_palantir(texto):
-    st.markdown(
-        f"""
-        <div style='
-            background-color: #E5E7EB;
-            padding: 1rem;
-            border-left: 4px solid #2C3E50;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            font-size: 15px;
-        '>
-            {texto}
-        </div>
-        """, unsafe_allow_html=True)
+symbol = st.text_input('Ingrese el ticker de la emisora')
+if symbol != 'PLTR':
+    st.error("Lo sentimos, esta app solo jala con Palantir")
+    st.stop
+
+st.markdown("""
+    <style>
+        body {
+            background-color: #1E1E1E;
+            color: #FFFFFF;
+        }
+        .main {
+            background-color: #1E1E1E;
+        }
+        h1, h2, h3, h4 {
+            color: #FFFFFF;
+        }
+        .stTextInput>div>div>input {
+            background-color: #2C3E50;
+            color: white;
+        }
+        .stradio>div {
+            color: white;
+        }
+        .css-1d391kg { /* scrollable container (default streamlit container class) */
+            background-color: #2C3E50
+        }
+        .stDataFrame {
+            background-color: #2C3E50;
+            color: white;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 def get_company_info(ticker):
     try:
@@ -43,7 +62,7 @@ def get_company_info(ticker):
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
-st.markdown("<h1 style='text-align: center;'> The Financial Analyst</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
 symbol = st.text_input('Ingrese el ticker de la emisora (por ejemplo, AAPL, NVDA)', 'AAPL').upper()
     
 def calcular_cagr(precios, años):
