@@ -395,5 +395,5 @@ st.markdown("""
             z-index: 100;
         }
     </style>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/2/27/Palantir_Technologies_logo.svg" class="logo-palantir">
+    <img src="https://seekvectorlogo.com/palantir-vector-logo-svg/" class="logo-palantir">
 """, unsafe_allow_html=True)
