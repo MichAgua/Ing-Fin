@@ -62,10 +62,9 @@ def caja_palantir(texto):
         """, unsafe_allow_html=True)
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
-if symbol != 'PLTR':
-    st.error("Lo sentimos, esta app solo jala con Palantir")
-    st.stop
-st.success("Gracias por su comprensión!")
+if symbol and symbol != 'PLTR':
+    st.markdown("<h4 style='color: red;'> Esta app solo funciona con el ticker <code>PLTR</code> (Palantir Technologies).</hr>", unsafe_allow_html=True)
+    st.stop()
 
 st.markdown("""
     <style>
