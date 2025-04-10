@@ -390,10 +390,18 @@ st.markdown("""
             position: fixed;
             right: 20px;
             bottom: 20px;
-            width: 60px;
-            opacity: 0.15;
+            width: 55px;
+            opacity: 0.3;
             z-index: 100;
         }
+
+        .logo-palantir:hover {
+            opacity: 0.8;
+            transform: scale(1.1);
+            transition: 0.3s ease-in-out;
+        }
     </style>
-    <img src="<a href="https://seekvectorlogo.com/palantir-vector-logo-svg/" target="_blank"><img src="https://seekvectorlogo.com/wp-content/uploads/2018/01/palantir-vector-logo.png" /></a>" class="logo-palantir">
+    <a href="https://seekvectorlogo.com/palantir-vector-logo-svg/" target="_blank">
+        <img src="https://seekvectorlogo.com/wp-content/uploads/2018/01/palantir-vector-logo.png" class="logo-palantir">
+    </a>
 """, unsafe_allow_html=True)
