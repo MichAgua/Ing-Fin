@@ -92,8 +92,10 @@ if symbol == 'HACK':
     st.markdown("<h1 style='color: lime;'>🔐 Sistema Palantir Infiltrado</h1>", unsafe_allow_html=True)
     st.markdown("""
         <style>
-            body {
+            .main {
                 background-color: black !important;
+            }
+            h1, p, div, span {
                 color: lime !important;
             }
         </style>
