@@ -97,15 +97,17 @@ def get_company_info(ticker):
         return {}
 
 if symbol:
-    ticker = yf.Ticker(symbol)
-
-try:
-    info = get_company_info(ticker)
-    if not info:
-        raise ValueError("No se pudo obtener la información del ticker")
-except Exception as e:
-    st.error(f"Error al obtener la información de la emisora: {e}")
-    st.stop()
+    try:
+        ticker = yf.Ticker(symbol)
+        info = get_company_info(ticker)
+        if not info:
+            raise ValueError("No se pudo obtener la información del ticker.")
+        hist = ticker.history(period="5y")
+        if hist.empty:
+            raise ValueError("No se encontraron datos históricos para este ticker.")
+    except Exception as e:
+        st.error(f"Error al obtener la información de la emisora: {e}")
+        st.stop()
 hist = ticker.history(period="5y")
 if hist.empty:
     st.error("No se encontraron datos históricos para este ticker.")
