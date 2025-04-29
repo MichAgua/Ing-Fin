@@ -84,18 +84,18 @@ def get_company_info(ticker):
         ...
         
         return {
-    'Nombre': limpiar_valor(info.get('shortName')),
-    'País': limpiar_valor(info.get('country')),
-    'Sector': limpiar_valor(info.get('sector')),
-    'Industria': limpiar_valor(info.get('industry')),
-    'Descripción': limpiar_valor(info.get('longBusinessSummary')),
-    'Beta': limpiar_valor(info.get('beta')),
-    'Forward PE': limpiar_valor(info.get('forwardPE')),
-    'Price to Book': limpiar_valor(info.get('priceToBook')),
-    'Market Cap': limpiar_valor(info.get('marketCap')),
-    'Dividend Yield': limpiar_valor(info.get('dividendYield')),
-    'Dividendo por Acción': limpiar_valor(info.get('dividendRate')),
-}
+        'Nombre':info.get('shortName', 'Falta de información'),
+        'País': info.get('country', 'Falta de información'),
+        'Sector': info.get('sector', 'Falta de información'),
+        'Industria': info.get('industry', 'Falta de información'),
+        'Descripción': info.get('longBusinessSummary', 'Falta de información'),
+        'Beta': info.get('beta', 'Falta de información'),
+        'Forward PE': info.get('forwardPE', 'Falta de información'),
+        'Price to Book': info.get('priceToBook', 'Falta de información'),
+        'Market Cap': info.get('marketCap', 'Falta de información'),
+        'Dividend Yield': info.get('dividendYield', 'Falta de información'),
+        'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
+        }
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
@@ -246,7 +246,11 @@ if symbol:
         "Gráfico de Precios Historicos",
         "Rendimientos CAGR",
         "Volatilidad Histórica",
-        "Simulación de Monte Carlo"
+        "Simulación de Monte Carlo",
+        "Análisis Estadístico",
+        "Comparación Contra Índice",
+        "Medias Móviles",
+        "Cartera Eficiente"
     ),
     horizontal=True
 )
@@ -383,6 +387,80 @@ if symbol:
         ax_mc.grid(True)
 
         st.pyplot(fig_mc)
+
+    elif seccion == "Análisis Estadístico":
+        st.markdown("### Análisis estadístico del precio de cierre")
+        st.write("Este análisis resume el comportamiento histórico del precio.")
+
+        resumen = hist["Close"].describe()
+        st.write(resumen)
+
+        fig_stats, ax_stats = plt.subplots()
+        sns.histplot(hist["Close"], kde=True, ax=ax_stats)
+        ax_stats.set_title("Distribución de precios de cierre")
+        st.pyplot(fig_stats)
+
+    elif seccion == "Comparación Contra Índice":
+        st.markdown("### Comparación contra S&P 500")
+        st.write("Se compara el rendimiento del ticker con el índice SPY.")
+
+        spy = yf.Ticker("SPY").history(period="5y")["Close"]
+        merged = pd.DataFrame({
+            symbol: hist["Close"],
+            "SPY": spy
+        }).dropna()
+
+        normalized = merged / merged.iloc[0] * 100
+
+        fig_cmp, ax_cmp = plt.subplots()
+        normalized.plot(ax=ax_cmp)
+        ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
+        ax_cmp.set_ylabel("Precio Normalizado")
+        st.pyplot(fig_cmp)
+
+    elif seccion == "Medias Móviles":
+        st.markdown("### Medias Móviles")
+        st.write("Promedios móviles de corto y largo plazo.")
+
+        hist["MA50"] = hist["Close"].rolling(window=50).mean()
+        hist["MA200"] = hist["Close"].rolling(window=200).mean()
+
+        fig_ma, ax_ma = plt.subplots()
+        ax_ma.plot(hist["Close"], label="Precio")
+        ax_ma.plot(hist["MA50"], label="MA50")
+        ax_ma.plot(hist["MA200"], label="MA200")
+        ax_ma.set_title("Medias Móviles")
+        ax_ma.legend()
+        st.pyplot(fig_ma)
+
+    elif seccion == "Cartera Eficiente":
+        st.markdown("### Cartera eficiente (teoría de Markowitz)")
+
+        tickers = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)", "AAPL,MSFT,NVDA").split(',')
+        data = yf.download(tickers, period="3y")["Adj Close"].dropna()
+        returns = data.pct_change().dropna()
+
+        n_assets = len(tickers)
+        n_portfolios = 2000
+        results = np.zeros((3, n_portfolios))
+
+        for i in range(n_portfolios):
+            weights = np.random.random(n_assets)
+            weights /= np.sum(weights)
+            ret = np.dot(weights, returns.mean()) * 252
+            vol = np.sqrt(np.dot(weights.T, np.dot(returns.cov()*252, weights)))
+            sharpe = ret / vol
+            results[0, i] = ret
+            results[1, i] = vol
+            results[2, i] = sharpe
+
+        fig_port, ax_port = plt.subplots()
+        sc = ax_port.scatter(results[1], results[0], c=results[2], cmap="viridis")
+        ax_port.set_xlabel("Volatilidad")
+        ax_port.set_ylabel("Retorno Esperado")
+        ax_port.set_title("Frontera eficiente")
+        fig_port.colorbar(sc, label="Sharpe Ratio")
+        st.pyplot(fig_port)
 
 st.markdown("""
     <style>
