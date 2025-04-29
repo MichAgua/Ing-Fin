@@ -118,6 +118,10 @@ st.markdown("""
 def get_company_info(ticker):
     try:
         info = ticker.info
+
+        if not info or info is None or "shortName" not in info: 
+            return None
+        
         return {
         'Nombre':info.get('shortName', 'Falta de información'),
         'País': info.get('country', 'Falta de información'),
@@ -131,9 +135,15 @@ def get_company_info(ticker):
         'Dividend Yield': info.get('dividendYield', 'Falta de información'),
         'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
         }
+    
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
+    
+info = get_company_info(ticker)
+if not info:
+    st.warning("No se pudo obtener la información. Verifica el ticker o intenta más tarde.")
+    st.stop()
     
 def calcular_cagr(precios, años):
     try:
