@@ -96,14 +96,16 @@ def get_company_info(ticker):
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
 
-
 if symbol:
     ticker = yf.Ticker(symbol)
 
+try:
     info = get_company_info(ticker)
     if not info:
-        st.warning("No se pudo obtener la informacion")
-        st.stop()
+        raise ValueError("No se pudo obtener la información del ticker")
+except Exception as e:
+    st.error(f"Error al obtener la información de la emisora: {e}")
+    st.stop()
     hist = ticker.history(period="5y")
 
 if symbol == 'HACK':
