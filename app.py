@@ -437,7 +437,8 @@ if symbol:
         st.markdown("### Cartera eficiente (teoría de Markowitz)")
 
         tickers = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)", "AAPL,MSFT,NVDA").split(',')
-        data = yf.download(tickers, period="3y")["Adj Close"].dropna()
+        data = yf.download(tickers, period="3y", group_by='ticker')["Adj Close"]
+        data = data.dropna(axis=0, how="any")
         returns = data.pct_change().dropna()
 
         n_assets = len(tickers)
