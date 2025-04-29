@@ -96,19 +96,9 @@ def get_company_info(ticker):
 
 if symbol:
     if symbol == 'HACK':
-    st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
-    st.markdown("""
-        <style>
-            .main {
-                background-color: black !important;
-            }
-            h1, p, div, span {
-                color: lime !important;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-    st.balloons()
-    st.stop()
+        st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
+        st.balloons()
+        st.stop()
 
     try:
         ticker = yf.Ticker(symbol)
