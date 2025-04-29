@@ -52,7 +52,7 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst - Palantir Edition</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst </h1>", unsafe_allow_html=True)
 
 def caja_palantir(texto):
     st.markdown(
