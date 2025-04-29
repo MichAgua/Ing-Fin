@@ -72,7 +72,7 @@ def caja_palantir(texto):
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
 if symbol == 'HACK':
-    st.markdown("<h1 style='color: lime;'>Sistema Palantir Infiltrado</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
     st.markdown("""
         <style>
             .main {
@@ -84,9 +84,6 @@ if symbol == 'HACK':
         </style>
     """, unsafe_allow_html=True)
     st.balloons()
-    st.stop()
-if symbol and symbol != 'PLTR':
-    st.markdown("<h4 style='color: red;'> Ticker invalido. Por favor revise e intente de nuevo. Esta app solo funciona con el ticker <code>PLTR</code> (Palantir Technologies).</hr>", unsafe_allow_html=True)
     st.stop()
 
 st.markdown("""
