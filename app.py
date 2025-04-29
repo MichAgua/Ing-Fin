@@ -71,14 +71,6 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
-if symbol:
-    ticker = yf.Ticker(symbol)
-
-    info = get_company_info(ticker)
-    if not info:
-        st.warning("No se pudo obtener la informacion")
-        st.stop()
-
 def get_company_info(ticker):
     try:
         info = ticker.info
@@ -103,6 +95,16 @@ def get_company_info(ticker):
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
+
+
+if symbol:
+    ticker = yf.Ticker(symbol)
+
+    info = get_company_info(ticker)
+    if not info:
+        st.warning("No se pudo obtener la informacion")
+        st.stop()
+    hist = ticker.history(period="5y")
 
 if symbol == 'HACK':
     st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
