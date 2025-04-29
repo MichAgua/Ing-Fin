@@ -106,7 +106,10 @@ try:
 except Exception as e:
     st.error(f"Error al obtener la información de la emisora: {e}")
     st.stop()
-    hist = ticker.history(period="5y")
+hist = ticker.history(period="5y")
+if hist.empty:
+    st.error("No se encontraron datos históricos para este ticker.")
+    st.stop()
 
 if symbol == 'HACK':
     st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
