@@ -119,7 +119,7 @@ def get_company_info(ticker):
     try:
         info = ticker.info
 
-        if not info or info is None or "shortName" not in info: 
+        if not insistance(info, dict) or "shortName" not in info: 
             return None
         
         return {
@@ -224,7 +224,7 @@ def comparar_pb_sector(pb, sector):
     
 if symbol:
     ticker = yf.Ticker(symbol)
-    
+
     info = get_company_info(ticker)
     if not info:
         st.warning("No se pudo obtener la informacion")
