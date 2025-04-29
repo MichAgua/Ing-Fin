@@ -130,7 +130,6 @@ def get_company_info(ticker):
         'Market Cap': info.get('marketCap', 'Falta de información'),
         'Dividend Yield': info.get('dividendYield', 'Falta de información'),
         'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
-        'Logo': info.get('logo_url', None)
         }
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
@@ -221,7 +220,6 @@ def comparar_pb_sector(pb, sector):
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
-    logo_url = ticker.info.get("Logo", None)
     hist = ticker.history(period="5y")
 
     seccion = st.radio(
@@ -239,17 +237,7 @@ if symbol:
 )
 
     if seccion == "Información Basica":
-        st.markdown("### Información Basica")
-        col_logo, col_nombre = st.columns([1, 5])
-        with col_logo:
-            if logo_url:
-                st.image(logo_url, width=60)
-            else:
-                st.markdown("Logo no disponible")
-
-        with col_nombre:
-            st.markdown(f"$$ {info['Nombre']}")
-
+        st.markdown(f'###{info['Nombre']}')
         col1, col2, col3 = st.columns(3)
         col1.markdown(f"**Nombre:** {info['Nombre']}")
         col2.markdown(f"**País:** {info['País']}")
