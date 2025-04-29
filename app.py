@@ -74,8 +74,9 @@ symbol = st.text_input('Ingrese el ticker de la emisora')
 def get_company_info(ticker):
     try:
         info = ticker.info
-        if not isinstance(info, dict) or "shortName" not in info: 
+        if not isinstance(info, dict) or "shortName" not in info:
             return None
+        ...
         
         return {
         'Nombre':info.get('shortName', 'Falta de información'),
@@ -104,13 +105,13 @@ if symbol:
         ticker = yf.Ticker(symbol)
         info = get_company_info(ticker)
 
-        if not info:
+        if not info or info is None:
             raise ValueError("No se pudo obtener la información del ticker.")
-        
+
         hist = ticker.history(period="5y")
-        if hist.empty:
+        if hist is None or hist.empty:
             raise ValueError("No se encontraron datos históricos para este ticker.")
-        
+
     except Exception as e:
         st.error(f"Error al obtener la información de la emisora: {e}")
         st.stop()
