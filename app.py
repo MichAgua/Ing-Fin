@@ -436,13 +436,22 @@ if symbol:
     elif seccion == "Cartera Eficiente":
         st.markdown("### Cartera eficiente (teoría de Markowitz)")
 
-        tickers = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)", "AAPL,MSFT,NVDA").split(',')
-        raw = yf.download(tickers, period="3y", auto_adjust=True)
-        if isinstance(tickers, str) or len(tickers.split(',')) == 1:
-            data = raw[['Close']]
-            data.columns = [tickers]
-        else:
-            data = raw['Close']
+        tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
+
+if tickers_input:
+    tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
+
+    raw = yf.download(tickers, period="3y", auto_adjust=True)
+
+    if len(tickers) == 1:
+        data = raw[['Close']]
+        data.columns = tickers
+    else:
+        data = raw['Close']
+        data = raw[['Close']]
+        data.columns = [tickers]
+else:
+        data = raw['Close']
         data = data.dropna(axis=0, how="any")
         returns = data.pct_change().dropna()
 
