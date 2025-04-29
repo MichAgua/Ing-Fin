@@ -71,6 +71,36 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
+def get_company_info(ticker):
+    try:
+        info = ticker.info
+
+        if not insistance(info, dict) or "shortName" not in info: 
+            return None
+        
+        return {
+        'Nombre':info.get('shortName', 'Falta de información'),
+        'País': info.get('country', 'Falta de información'),
+        'Sector': info.get('sector', 'Falta de información'),
+        'Industria': info.get('industry', 'Falta de información'),
+        'Descripción': info.get('longBusinessSummary', 'Falta de información'),
+        'Beta': info.get('beta', 'Falta de información'),
+        'Forward PE': info.get('forwardPE', 'Falta de información'),
+        'Price to Book': info.get('priceToBook', 'Falta de información'),
+        'Market Cap': info.get('marketCap', 'Falta de información'),
+        'Dividend Yield': info.get('dividendYield', 'Falta de información'),
+        'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
+        }
+    
+    except Exception as e:
+        st.error(f'Error al obtener la información de la emisora: {e}')
+        return {}
+    
+info = get_company_info(ticker)
+if not info:
+    st.warning("No se pudo obtener la información. Verifica el ticker o intenta más tarde.")
+    st.stop()
+
 if symbol == 'HACK':
     st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
     st.markdown("""
@@ -114,36 +144,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-
-def get_company_info(ticker):
-    try:
-        info = ticker.info
-
-        if not insistance(info, dict) or "shortName" not in info: 
-            return None
-        
-        return {
-        'Nombre':info.get('shortName', 'Falta de información'),
-        'País': info.get('country', 'Falta de información'),
-        'Sector': info.get('sector', 'Falta de información'),
-        'Industria': info.get('industry', 'Falta de información'),
-        'Descripción': info.get('longBusinessSummary', 'Falta de información'),
-        'Beta': info.get('beta', 'Falta de información'),
-        'Forward PE': info.get('forwardPE', 'Falta de información'),
-        'Price to Book': info.get('priceToBook', 'Falta de información'),
-        'Market Cap': info.get('marketCap', 'Falta de información'),
-        'Dividend Yield': info.get('dividendYield', 'Falta de información'),
-        'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
-        }
-    
-    except Exception as e:
-        st.error(f'Error al obtener la información de la emisora: {e}')
-        return {}
-    
-info = get_company_info(ticker)
-if not info:
-    st.warning("No se pudo obtener la información. Verifica el ticker o intenta más tarde.")
-    st.stop()
     
 def calcular_cagr(precios, años):
     try:
