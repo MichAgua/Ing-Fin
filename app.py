@@ -140,6 +140,11 @@ def get_company_info(ticker):
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
     
+info = get_company_info(ticker)
+if not info:
+    st.warning("No se pudo obtener la información. Verifica el ticker o intenta más tarde.")
+    st.stop()
+    
 def calcular_cagr(precios, años):
     try:
         inicio = precios["Close"].iloc[-252*años]
