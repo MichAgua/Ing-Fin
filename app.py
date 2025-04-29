@@ -84,18 +84,18 @@ def get_company_info(ticker):
         ...
         
         return {
-        'Nombre':info.get('shortName', 'Falta de información'),
-        'País': info.get('country', 'Falta de información'),
-        'Sector': info.get('sector', 'Falta de información'),
-        'Industria': info.get('industry', 'Falta de información'),
-        'Descripción': info.get('longBusinessSummary', 'Falta de información'),
-        'Beta': info.get('beta', 'Falta de información'),
-        'Forward PE': info.get('forwardPE', 'Falta de información'),
-        'Price to Book': info.get('priceToBook', 'Falta de información'),
-        'Market Cap': info.get('marketCap', 'Falta de información'),
-        'Dividend Yield': info.get('dividendYield', 'Falta de información'),
-        'Dividendo por Acción': info.get('dividendRate', 'Falta de información'),
-        }
+    'Nombre': limpiar_valor(info.get('shortName')),
+    'País': limpiar_valor(info.get('country')),
+    'Sector': limpiar_valor(info.get('sector')),
+    'Industria': limpiar_valor(info.get('industry')),
+    'Descripción': limpiar_valor(info.get('longBusinessSummary')),
+    'Beta': limpiar_valor(info.get('beta')),
+    'Forward PE': limpiar_valor(info.get('forwardPE')),
+    'Price to Book': limpiar_valor(info.get('priceToBook')),
+    'Market Cap': limpiar_valor(info.get('marketCap')),
+    'Dividend Yield': limpiar_valor(info.get('dividendYield')),
+    'Dividendo por Acción': limpiar_valor(info.get('dividendRate')),
+}
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
