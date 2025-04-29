@@ -71,10 +71,10 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
-def clean_value(val):
-    if val is None or val is ...:
+def limpiar_valor(valor):
+    if valor in [None, ..., Ellipsis]:
         return "No disponible"
-    return val
+    return valor
 
 def get_company_info(ticker):
     try:
