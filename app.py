@@ -220,6 +220,10 @@ def comparar_pb_sector(pb, sector):
 if symbol:
     ticker = yf.Ticker(symbol)
     info = get_company_info(ticker)
+    if not info:
+        st.warning("No se pudo obtener la informacion")
+        st.stop()
+    
     hist = ticker.history(period="5y")
 
     seccion = st.radio(
@@ -237,7 +241,7 @@ if symbol:
 )
 
     if seccion == "Información Basica":
-        st.markdown(f'###{info['Nombre']}')
+        st.markdown(f"### {info.get('Nombre', 'Nombre no disponible')}")
         col1, col2, col3 = st.columns(3)
         col1.markdown(f"**Nombre:** {info['Nombre']}")
         col2.markdown(f"**País:** {info['País']}")
