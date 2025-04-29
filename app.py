@@ -438,18 +438,23 @@ if symbol:
 
         tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
 
+tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
+
 if tickers_input:
     tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
-
     raw = yf.download(tickers, period="3y", auto_adjust=True)
 
     if len(tickers) == 1:
-        data = raw[['Close']]
+        data = raw[["Close"]]
         data.columns = tickers
     else:
-        data = raw['Close']
-        data = raw[['Close']]
-        data.columns = [tickers]
+        try:
+            data = raw["Close"]
+        except Exception as e:
+            st.error(f"Error al obtener los datos: {e}")
+            st.stop()
+
+    st.dataframe(data.tail(), use_container_width=True)
 else:
         data = raw['Close']
         data = data.dropna(axis=0, how="any")
