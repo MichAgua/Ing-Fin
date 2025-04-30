@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-
+@st.cache_data
+def obtener_historial(ticker_symbol: str, periodo="5y"):
+    return yf.Ticker(ticker_symbol).history(period=periodo, auto_adjust=True)
 
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
