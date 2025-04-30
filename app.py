@@ -433,31 +433,23 @@ if symbol:
         ax_ma.legend()
         st.pyplot(fig_ma)
 
-    elif seccion == "Cartera Eficiente":
-        st.markdown("### Cartera eficiente (teoría de Markowitz)")
+elif seccion == "Cartera Eficiente":
+    st.markdown("### Cartera eficiente (teoría de Markowitz)")
+    tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
 
-        tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
+    if tickers_input:
+        tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
+        raw = yf.download(tickers, period="3y", auto_adjust=True)
 
-tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
-
-if tickers_input:
-    tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
-    raw = yf.download(tickers, period="3y", auto_adjust=True)
-
-    if len(tickers) == 1:
-        data = raw[["Close"]]
-        data.columns = tickers
-    else:
         try:
-            data = raw["Close"]
+            data = raw["Close"] if len(tickers) > 1 else raw[["Close"]]
+            if len(tickers) == 1:
+                data.columns = tickers
         except Exception as e:
             st.error(f"Error al obtener los datos: {e}")
             st.stop()
 
-    st.dataframe(data.tail(), use_container_width=True)
-else:
-        data = raw['Close']
-        data = data.dropna(axis=0, how="any")
+        data = data.dropna()
         returns = data.pct_change().dropna()
 
         n_assets = len(tickers)
@@ -468,7 +460,7 @@ else:
             weights = np.random.random(n_assets)
             weights /= np.sum(weights)
             ret = np.dot(weights, returns.mean()) * 252
-            vol = np.sqrt(np.dot(weights.T, np.dot(returns.cov()*252, weights)))
+            vol = np.sqrt(np.dot(weights.T, np.dot(returns.cov() * 252, weights)))
             sharpe = ret / vol
             results[0, i] = ret
             results[1, i] = vol
