@@ -433,9 +433,9 @@ if symbol:
         ax_ma.legend()
         st.pyplot(fig_ma)
 
-elif seccion == "Cartera Eficiente":
-    st.markdown("### Cartera eficiente (teoría de Markowitz)")
-    tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
+    elif seccion == "Cartera Eficiente":
+        st.markdown("### Cartera eficiente (teoría de Markowitz)")
+        tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
 
     if tickers_input:
         tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
