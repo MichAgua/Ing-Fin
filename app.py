@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+
+
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("""
@@ -109,6 +111,8 @@ if symbol:
     if not symbol.strip():
         st.warning("⚠️ Ingresa un ticker válido antes de continuar.")
         st.stop()
+
+        st.write("Función obtener_historial:", obtener_historial)
 
     try:
         hist = obtener_historial(symbol)
