@@ -5,6 +5,26 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+@st.cache_data
+def obtener_historial(ticker_symbol: str, periodo="5y"):
+    return yf.Ticker(ticker_symbol).history(period=periodo, auto_adjust=True)
+
+@st.cache_data
+def obtener_info_ticker(ticker_symbol: str):
+    return yf.Ticker(ticker_symbol).info
+
+@st.cache_data
+def obtener_cierre_masivo(tickers: list, periodo="3y"):
+    data = {}
+    for t in tickers:
+        try:
+            precios = yf.Ticker(t).history(period=periodo, auto_adjust=True)["Close"]
+            if not precios.empty:
+                data[t] = precios
+        except:
+            continue
+    return pd.DataFrame(data)
+
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("""
@@ -78,7 +98,7 @@ def limpiar_valor(valor):
 
 def get_company_info(ticker):
     try:
-        info = ticker.info
+        info = obtener_info_ticker(symbol)
         if not isinstance(info, dict) or "shortName" not in info:
             return None
         ...
@@ -111,14 +131,14 @@ if symbol:
         st.stop()
 
     try:
+        hist = obtener_historial(symbol)
         ticker = yf.Ticker(symbol)
-        hist = ticker.history(period="5y", auto_adjust=True)
 
         if hist is None or hist.empty or len(hist) < 10:
             st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
             st.stop()
         ticker = yf.Ticker(symbol)
-        info = None
+        info = get_company_info(symbol)
 
     except Exception as e:
             if "rate limit" in str(e).lower():
@@ -267,11 +287,11 @@ if symbol:
     horizontal=True
 )
     
-    info = get_company_info(ticker)
-    
+    info = get_company_info(symbol)
+
     if info is None:
         try:
-            info = ticker.info
+            info = obtener_info_ticker(symbol)
         except Exception as e:
             st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
             st.stop()
@@ -285,7 +305,7 @@ if symbol:
 
     if info is None:
         try:
-            info = ticker.info
+            info = obtener_info_ticker(symbol)
         except Exception as e:
             st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
             st.stop()
@@ -309,7 +329,7 @@ if symbol:
 
             if info is None:
                 try:
-                    info = ticker.info
+                    info = obtener_info_ticker(symbol)
                 except Exception as e:
                     st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
                     st.stop()
@@ -473,20 +493,7 @@ if symbol:
 
     if tickers_input:
         tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
-        raw_data = {}
-        for t in tickers:
-            try:
-                data = yf.Ticker(t).history(period="3y", auto_adjust=True)["Close"]
-                if not data.empty:
-                    raw_data[t] = data
-            except:
-                continue
-
-        if not raw_data:
-            st.error("No se pudo obtener información para ninguno de los tickers ingresados.")
-            st.stop()
-
-        data = pd.DataFrame(raw_data)
+        data = obtener_cierre_masivo(tickers)
 
         data = data.dropna()
         st.markdown("#### Últimos precios históricos de los activos seleccionados")
