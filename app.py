@@ -143,10 +143,7 @@ if symbol:
             st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
             st.stop()
     except Exception as e:
-        if "rate limit" in str(e).lower():
-            st.warning("Yahoo Finance está limitando las consultas. Espera unos minutos y vuelve a intentarlo.")
-        else:
-            st.error(f"Error al obtener el historial: {e}")
+        st.error(f"Error al obtener la información: {e}")
         st.stop()
 
     try:
