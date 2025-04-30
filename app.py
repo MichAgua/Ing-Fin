@@ -266,6 +266,9 @@ if symbol:
     ),
     horizontal=True
 )
+    
+    info = get_company_info(ticker)
+    
     if info is None:
         try:
             info = ticker.info
