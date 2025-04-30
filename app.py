@@ -111,7 +111,8 @@ if symbol:
         st.stop()
 
     try:
-        hist = yf.download(symbol, period="5y", auto_adjust=True)
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period="5y", auto_adjust=True)
 
         if hist is None or hist.empty or len(hist) < 10:
             st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
@@ -469,15 +470,20 @@ if symbol:
 
     if tickers_input:
         tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
-        raw = yf.download(tickers, period="3y", auto_adjust=True)
+        raw_data = {}
+        for t in tickers:
+            try:
+                data = yf.Ticker(t).history(period="3y", auto_adjust=True)["Close"]
+                if not data.empty:
+                    raw_data[t] = data
+            except:
+                continue
 
-        try:
-            data = raw["Close"] if len(tickers) > 1 else raw[["Close"]]
-            if len(tickers) == 1:
-                data.columns = tickers
-        except Exception as e:
-            st.error(f"Error al obtener los datos: {e}")
+        if not raw_data:
+            st.error("No se pudo obtener información para ninguno de los tickers ingresados.")
             st.stop()
+
+        data = pd.DataFrame(raw_data)
 
         data = data.dropna()
         st.markdown("#### Últimos precios históricos de los activos seleccionados")
