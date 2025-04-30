@@ -71,18 +71,38 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
+if symbol:
+    if symbol == 'HACK':
+        st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
+        st.balloons()
+        st.stop()
+
+    info = get_company_info(symbol)
+
+    if "error" in info:
+        st.error(f"Error al obtener la información: {info['error']}")
+        st.stop()
+
+    ticker = yf.Ticker(symbol)
+    hist = ticker.history(period="5y")
+    if hist.empty:
+        st.error("No se encontraron datos históricos para este ticker.")
+        st.stop()
+
 def limpiar_valor(valor):
     if valor in [None, ..., Ellipsis]:
         return "No disponible"
     return valor
 
-def get_company_info(ticker):
+@st.cache_data(ttl=86400)
+def get_company_info(ticker_symbol: str):
     try:
+        ticker = yf.Ticker(ticker_symbol)
         info = ticker.info
+
         if not isinstance(info, dict) or "shortName" not in info:
-            return None
-        ...
-        
+            return {"error": "Ticker no válido o sin información disponible."}
+
         return {
         'Nombre':info.get('shortName', 'Falta de información'),
         'País': info.get('country', 'Falta de información'),
