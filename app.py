@@ -490,7 +490,7 @@ if symbol:
         st.warning("⚠️ No se pudo obtener la comparación con SPY. Puede ser por límite de consultas.")
         st.error(f"Detalle técnico: {e}")
 
-    elif seccion == "Medias Móviles":
+    if seccion == "Medias Móviles":
         st.markdown("<h3 style='color:#4ade80'> Medias Móviles </h3>", unsafe_allow_html=True)
         st.write("Promedios móviles de corto y largo plazo.")
 
