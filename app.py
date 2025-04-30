@@ -71,27 +71,6 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
-if symbol:
-    if symbol == 'HACK':
-        st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
-        st.balloons()
-        st.stop()
-
-    if "error" in info:
-        st.error(f"Error al obtener la información: {info['error']}")
-        st.stop()
-
-    ticker = yf.Ticker(symbol)
-    hist = ticker.history(period="5y")
-    if hist.empty:
-        st.error("No se encontraron datos históricos para este ticker.")
-        st.stop()
-
-def limpiar_valor(valor):
-    if valor in [None, ..., Ellipsis]:
-        return "No disponible"
-    return valor
-
 @st.cache_data(ttl=86400)
 def get_company_info(ticker_symbol: str):
     try:
@@ -118,6 +97,29 @@ def get_company_info(ticker_symbol: str):
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
 info = get_company_info(symbol)
+
+if symbol:
+    info = get_company_info(symbol)
+    
+    if symbol == 'HACK':
+        st.markdown("<h1 style='color: lime;'>Sistema Infiltrado</h1>", unsafe_allow_html=True)
+        st.balloons()
+        st.stop()
+
+    if "error" in info:
+        st.error(f"Error al obtener la información: {info['error']}")
+        st.stop()
+
+    ticker = yf.Ticker(symbol)
+    hist = ticker.history(period="5y")
+    if hist.empty:
+        st.error("No se encontraron datos históricos para este ticker.")
+        st.stop()
+
+def limpiar_valor(valor):
+    if valor in [None, ..., Ellipsis]:
+        return "No disponible"
+    return valor
 
 if symbol:
     if symbol == 'HACK':
