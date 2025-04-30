@@ -112,10 +112,9 @@ if symbol:
 
     try:
         hist = yf.download(symbol, period="5y", auto_adjust=True)
-        hist = yf.download(symbol, period="5y", auto_adjust=True)
 
         if hist is None or hist.empty or len(hist) < 10:
-            st.error("⚠️ No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
+            st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
             st.stop()
         ticker = yf.Ticker(symbol)
         info = None
