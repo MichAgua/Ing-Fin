@@ -134,9 +134,14 @@ if symbol:
         if not info or info is None:
             raise ValueError("No se pudo obtener la información del ticker.")
 
+    try:
         hist = ticker.history(period="5y")
-        if hist is None or hist.empty:
-            raise ValueError("No se encontraron datos históricos para este ticker.")
+        if hist.empty:
+            st.error("No se encontraron datos históricos para este ticker.")
+            st.stop()
+    except Exception as e:
+        st.error(f"Error al obtener datos históricos: {e}")
+        st.stop()
 
     except Exception as e:
         st.error(f"Error al obtener la información de la emisora: {e}")
