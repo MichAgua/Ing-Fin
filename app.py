@@ -296,26 +296,12 @@ if symbol:
     
     info = get_company_info(symbol)
 
-    if info is None:
-        try:
-            info = obtener_info_ticker(symbol)
-        except Exception as e:
-            st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
-            st.stop()
-
     if seccion == "Información Basica":
         st.markdown(f"### {info.get('Nombre', 'Nombre no disponible')}")
         col1, col2, col3 = st.columns(3)
         col1.markdown(f"**Nombre:** {info['Nombre']}")
         col2.markdown(f"**País:** {info['País']}")
         col3.markdown(f"**Sector:** {info['Sector']}")
-
-    if info is None:
-        try:
-            info = obtener_info_ticker(symbol)
-        except Exception as e:
-            st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
-            st.stop()
 
     elif seccion == "Industria y Descripción":
         st.markdown("<h3 style='color:#4ade80'> Industria y Descripción </h3>", unsafe_allow_html=True)
@@ -333,13 +319,6 @@ if symbol:
             unsafe_allow_html=True)
 
         with col7:
-
-            if info is None:
-                try:
-                    info = obtener_info_ticker(symbol)
-                except Exception as e:
-                    st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
-                    st.stop()
             forward_pe = info['Forward PE']
             interpretacion_pe = interpretar_forward_pe(forward_pe)
             st.markdown(f"**Forward PE:** {forward_pe}")
@@ -465,27 +444,27 @@ if symbol:
         st.markdown("<h3 style='color:#4ade80'> Comparación contra S&P 500 </h3>", unsafe_allow_html=True)
         st.write("Se compara el rendimiento del ticker con el índice SPY.")
 
-    try:
-        spy = obtener_cierre_spy()
-        if spy.empty:
-            raise ValueError("No se pudieron obtener datos del índice SPY.")
+        try:
+            spy = obtener_cierre_spy()
+            if spy.empty:
+                raise ValueError("No se pudieron obtener datos del índice SPY.")
         
-        merged = pd.DataFrame({
-            symbol: hist["Close"],
-            "SPY": spy
-        }).dropna()
+            merged = pd.DataFrame({
+                symbol: hist["Close"],
+                "SPY": spy
+            }).dropna()
 
-        normalized = merged / merged.iloc[0] * 100
+            normalized = merged / merged.iloc[0] * 100
 
-        fig_cmp, ax_cmp = plt.subplots()
-        normalized.plot(ax=ax_cmp)
-        ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
-        ax_cmp.set_ylabel("Precio Normalizado")
-        st.pyplot(fig_cmp)
+            fig_cmp, ax_cmp = plt.subplots()
+            normalized.plot(ax=ax_cmp)
+            ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
+            ax_cmp.set_ylabel("Precio Normalizado")
+            st.pyplot(fig_cmp)
 
-    except Exception as e:
-        st.warning("⚠️ No se pudo obtener la comparación con SPY. Puede ser por límite de consultas.")
-        st.error(f"Detalle técnico: {e}")
+        except Exception as e:
+            st.warning("⚠️ No se pudo obtener la comparación con SPY. Puede ser por límite de consultas.")
+            st.error(f"Detalle técnico: {e}")
 
     if seccion == "Medias Móviles":
         st.markdown("<h3 style='color:#4ade80'> Medias Móviles </h3>", unsafe_allow_html=True)
