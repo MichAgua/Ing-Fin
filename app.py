@@ -106,6 +106,10 @@ if symbol:
         st.balloons()
         st.stop()
 
+    if not symbol.strip():
+        st.warning("⚠️ Ingresa un ticker válido antes de continuar.")
+        st.stop()
+
     try:
         hist = yf.download(symbol, period="5y", auto_adjust=True)
         if hist is None or hist.empty:
