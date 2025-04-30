@@ -132,20 +132,23 @@ if symbol:
 
     try:
         hist = obtener_historial(symbol)
-        ticker = yf.Ticker(symbol)
-
         if hist is None or hist.empty or len(hist) < 10:
             st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
             st.stop()
-        ticker = yf.Ticker(symbol)
-        info = get_company_info(symbol)
-
     except Exception as e:
-            if "rate limit" in str(e).lower():
-                st.warning(" Yahoo Finance está limitando las consultas. Espera unos minutos y vuelve a intentarlo.")
-            else:
-                st.error(f" Error al obtener la información: {e}")
-                st.stop()
+        if "rate limit" in str(e).lower():
+            st.warning("Yahoo Finance está limitando las consultas. Espera unos minutos y vuelve a intentarlo.")
+        else:
+            st.error(f"Error al obtener el historial: {e}")
+        st.stop()
+
+    try:
+        info = get_company_info(symbol)
+        if not info:
+            raise ValueError("No se pudo obtener la información del ticker.")
+    except Exception as e:
+        st.error(f"Error al obtener la información de la emisora: {e}")
+        st.stop()
     try:
         if not info or info is None:
             raise ValueError("No se pudo obtener la información del ticker.")
