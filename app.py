@@ -77,8 +77,6 @@ if symbol:
         st.balloons()
         st.stop()
 
-    info = get_company_info(symbol)
-
     if "error" in info:
         st.error(f"Error al obtener la información: {info['error']}")
         st.stop()
@@ -119,6 +117,7 @@ def get_company_info(ticker_symbol: str):
     except Exception as e:
         st.error(f'Error al obtener la información de la emisora: {e}')
         return {}
+info = get_company_info(symbol)
 
 if symbol:
     if symbol == 'HACK':
