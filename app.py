@@ -5,11 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-@st.cache_data
-def obtener_historial(ticker_symbol: str, periodo="5y"):
-    ticker = yf.Ticker(ticker_symbol)
-    return ticker.history(period=periodo, auto_adjust=True)
-
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("""
@@ -49,6 +44,14 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        html, body, [class*="css"] {
+            font-family: 'Share Tech Mono', monospace;
+        }
+    </style>
+""", unsafe_allow_html=True)
 st.markdown("<h1 style='text-align: center; color: white;'> The Financial Analyst </h1>", unsafe_allow_html=True)
 
 def caja_palantir(texto):
@@ -68,9 +71,14 @@ def caja_palantir(texto):
 
 symbol = st.text_input('Ingrese el ticker de la emisora')
 
+def limpiar_valor(valor):
+    if valor in [None, ..., Ellipsis]:
+        return "No disponible"
+    return valor
+
 def get_company_info(ticker):
     try:
-        info = obtener_info_ticker(symbol)
+        info = ticker.info
         if not isinstance(info, dict) or "shortName" not in info:
             return None
         ...
@@ -99,25 +107,13 @@ if symbol:
         st.stop()
 
     try:
-        hist = obtener_historial(symbol)
-        if hist is None or hist.empty or len(hist) < 10:
-            st.error("No se encontraron datos históricos para este ticker. Verifica que el símbolo sea correcto y exista en Yahoo Finance.")
-            st.stop()
-    except Exception as e:
-        st.error(f"Error al obtener la información: {e}")
-        st.stop()
+        ticker = yf.Ticker(symbol)
+        info = get_company_info(ticker)
 
-    try:
-        info = get_company_info(symbol)
-        if not info:
-            raise ValueError("No se pudo obtener la información del ticker.")
-    except Exception as e:
-        st.error(f"Error al obtener la información de la emisora: {e}")
-        st.stop()
-    try:
         if not info or info is None:
             raise ValueError("No se pudo obtener la información del ticker.")
 
+        hist = ticker.history(period="5y")
         if hist is None or hist.empty:
             raise ValueError("No se encontraron datos históricos para este ticker.")
 
@@ -237,6 +233,10 @@ def comparar_pb_sector(pb, sector):
         return "Información no disponible"
     
 if symbol:
+    ticker = yf.Ticker(symbol)
+    
+    hist = ticker.history(period="5y")
+
     seccion = st.radio(
     "Selecciona lo que te gustaria visualizar:",
     (
@@ -254,8 +254,6 @@ if symbol:
     ),
     horizontal=True
 )
-    
-    info = get_company_info(symbol)
 
     if seccion == "Información Basica":
         st.markdown(f"### {info.get('Nombre', 'Nombre no disponible')}")
@@ -265,7 +263,7 @@ if symbol:
         col3.markdown(f"**Sector:** {info['Sector']}")
 
     elif seccion == "Industria y Descripción":
-        st.markdown("<h3 style='color:#4ade80'> Industria y Descripción </h3>", unsafe_allow_html=True)
+        st.markdown("### Industria y Descripción")
         col4, col5 = st.columns([1, 2])
         col4.markdown(f"**Industria:** {info['Industria']}")
         col5.markdown(f"**Descripción:** {info['Descripción']}")
@@ -312,8 +310,9 @@ if symbol:
             unsafe_allow_html=True)
 
     elif seccion == "Gráfico de Precios Historicos":
-        st.markdown("<h3 style='color:#4ade80'> Gráfico de Precios Historicos (ultimos 5 años) </h3>", unsafe_allow_html=True)
+        st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
         st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
+        hist = ticker.history(period="5y")
 
         fig, ax = plt.subplots(figsize=(6, 3))
         sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
@@ -328,7 +327,7 @@ if symbol:
             st.pyplot(fig)
 
     elif seccion == "Rendimientos CAGR":
-        st.markdown("<h3 style='color:#4ade80'> Rendimientos Anualizados (CAGR) </h3>", unsafe_allow_html=True)
+        st.markdown("### Rendimientos Anualizados (CAGR)")
         st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
         st.markdown("Este cálculo considera el precio al inicio y al final del periodo para determinar el rendimiento anualizado")
 
@@ -341,12 +340,12 @@ if symbol:
             "Rendimiento (%)": [cagr_1, cagr_3, cagr_5]
         })
         df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
-        st.data_editor(df_cagr, use_container_width=True, num_rows="dynamic", disabled=True)
+        st.dataframe(df_cagr, use_container_width=True)
 
         st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
 
     elif seccion == "Volatilidad Histórica":
-        st.markdown("<h3 style='color:#4ade80'> Volatilidad Historica (riesgo) </h3>", unsafe_allow_html=True)
+        st.markdown("### Volatilidad historica (riesgo)")
         st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
 
         retornos = hist["Close"].pct_change().dropna()
@@ -356,7 +355,7 @@ if symbol:
         st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
 
     elif seccion == "Simulación de Monte Carlo":
-        st.markdown("<h3 style='color:#4ade80'> Simulación de Monte Carlo </h3>", unsafe_allow_html=True)
+        st.markdown("### Simulación de Monte Carlo")
         st.markdown("""
         Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
         Sirve para visualizar escenarios de riesgo y retorno. 
@@ -390,7 +389,7 @@ if symbol:
         st.pyplot(fig_mc)
 
     elif seccion == "Análisis Estadístico":
-        st.markdown("<h3 style='color:#4ade80'> Análisis Estadístico de Precios del Cierre</h3>", unsafe_allow_html=True)
+        st.markdown("### Análisis estadístico del precio de cierre")
         st.write("Este análisis resume el comportamiento histórico del precio.")
 
         resumen = hist["Close"].describe()
@@ -402,82 +401,19 @@ if symbol:
         st.pyplot(fig_stats)
 
     elif seccion == "Comparación Contra Índice":
-        st.markdown("<h3 style='color:#4ade80'> Comparación contra S&P 500 </h3>", unsafe_allow_html=True)
+        st.markdown("### Comparación contra S&P 500")
         st.write("Se compara el rendimiento del ticker con el índice SPY.")
 
-        try:
-            spy = obtener_cierre_spy()
-            if spy.empty:
-                raise ValueError("No se pudieron obtener datos del índice SPY.")
-        
-            merged = pd.DataFrame({
-                symbol: hist["Close"],
-                "SPY": spy
-            }).dropna()
+        spy = yf.Ticker("SPY").history(period="5y")["Close"]
+        merged = pd.DataFrame({
+            symbol: hist["Close"],
+            "SPY": spy
+        }).dropna()
 
-            normalized = merged / merged.iloc[0] * 100
+        normalized = merged / merged.iloc[0] * 100
 
-            fig_cmp, ax_cmp = plt.subplots()
-            normalized.plot(ax=ax_cmp)
-            ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
-            ax_cmp.set_ylabel("Precio Normalizado")
-            st.pyplot(fig_cmp)
-
-        except Exception as e:
-            st.warning("⚠️ No se pudo obtener la comparación con SPY. Puede ser por límite de consultas.")
-            st.error(f"Detalle técnico: {e}")
-
-    if seccion == "Medias Móviles":
-        st.markdown("<h3 style='color:#4ade80'> Medias Móviles </h3>", unsafe_allow_html=True)
-        st.write("Promedios móviles de corto y largo plazo.")
-
-        hist["MA50"] = hist["Close"].rolling(window=50).mean()
-        hist["MA200"] = hist["Close"].rolling(window=200).mean()
-
-        fig_ma, ax_ma = plt.subplots()
-        ax_ma.plot(hist["Close"], label="Precio")
-        ax_ma.plot(hist["MA50"], label="MA50")
-        ax_ma.plot(hist["MA200"], label="MA200")
-        ax_ma.set_title("Medias Móviles")
-        ax_ma.legend()
-        st.pyplot(fig_ma)
-
-    elif seccion == "Cartera Eficiente":
-        st.markdown("<h3 style='color:#4ade80'> Cartera Eficiente (Teoria de Markowitz) </h3>", unsafe_allow_html=True)
-        tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
-
-    if tickers_input:
-        tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
-        data = obtener_cierre_masivo(tickers)
-
-        data = data.dropna()
-        st.markdown("#### Últimos precios históricos de los activos seleccionados")
-        st.data_editor(
-            data.tail(),
-            use_container_width=True,
-            num_rows="dynamic",
-            disabled=True
-        )
-        returns = data.pct_change().dropna()
-
-        n_assets = len(tickers)
-        n_portfolios = 2000
-        results = np.zeros((3, n_portfolios))
-
-        for i in range(n_portfolios):
-            weights = np.random.random(n_assets)
-            weights /= np.sum(weights)
-            ret = np.dot(weights, returns.mean()) * 252
-            vol = np.sqrt(np.dot(weights.T, np.dot(returns.cov() * 252, weights)))
-            sharpe = ret / vol
-            results[0, i] = ret
-            results[1, i] = vol
-            results[2, i] = sharpe
-
-        fig_port, ax_port = plt.subplots()
-        sc = ax_port.scatter(results[1], results[0], c=results[2], cmap="viridis")
-        ax_port.set_xlabel("Volatilidad")
-        ax_port.set_ylabel("Retorno Esperado")
-        ax_port.set_title("Frontera eficiente")
-        fig_port.colorbar(sc, label="Sharpe Ratio")
-        st.pyplot(fig_port)
+        fig_cmp, ax_cmp = plt.subplots()
+        normalized.plot(ax=ax_cmp)
+        ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
+        ax_cmp.set_ylabel("Precio Normalizado")
+        st.pyplot(fig_cmp)
