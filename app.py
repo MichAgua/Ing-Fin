@@ -263,7 +263,7 @@ if symbol:
         col3.markdown(f"**Sector:** {info['Sector']}")
 
     elif seccion == "Industria y Descripción":
-        st.markdown("### Industria y Descripción")
+        st.markdown("<h3 style='color:#4ade80'> Industria y Descripción </h3>", unsafe_allow_html=True)
         col4, col5 = st.columns([1, 2])
         col4.markdown(f"**Industria:** {info['Industria']}")
         col5.markdown(f"**Descripción:** {info['Descripción']}")
@@ -310,7 +310,7 @@ if symbol:
             unsafe_allow_html=True)
 
     elif seccion == "Gráfico de Precios Historicos":
-        st.markdown("### Gráfico de precios historicos (ultimos 5 años)")
+        st.markdown("<h3 style='color:#4ade80'> Gráfico de Precios Historicos (ultimos 5 años) </h3>", unsafe_allow_html=True)
         st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
         hist = ticker.history(period="5y")
 
@@ -327,7 +327,7 @@ if symbol:
             st.pyplot(fig)
 
     elif seccion == "Rendimientos CAGR":
-        st.markdown("### Rendimientos Anualizados (CAGR)")
+        st.markdown("<h3 style='color:#4ade80'> Rendimientos Anualizados (CAGR) </h3>", unsafe_allow_html=True)
         st.markdown("Se calcula el rendimiento compuesto anual (CAGR) para los ultimos 1, 3 y 5 años:")
         st.markdown("Este cálculo considera el precio al inicio y al final del periodo para determinar el rendimiento anualizado")
 
@@ -340,12 +340,12 @@ if symbol:
             "Rendimiento (%)": [cagr_1, cagr_3, cagr_5]
         })
         df_cagr["Rendimiento (%)"] = (df_cagr["Rendimiento (%)"] * 100).round(2)
-        st.dataframe(df_cagr, use_container_width=True)
+        st.data_editor(df_cagr, use_container_width=True, num_rows="dynamic", disabled=True)
 
         st.markdown("**Nota:** El rendimiento compuesto anual (CAGR) considera el precio al final y al inicio del periodo para calcular el crecimiento promedio anual.")
 
     elif seccion == "Volatilidad Histórica":
-        st.markdown("### Volatilidad historica (riesgo)")
+        st.markdown("<h3 style='color:#4ade80'> Volatilidad Historica (riesgo) </h3>", unsafe_allow_html=True)
         st.markdown("La volatilidad anualizada se calcula usando al desviación estandar de los rendimientos diarios multiplicada por la raíz de 252.")
 
         retornos = hist["Close"].pct_change().dropna()
@@ -355,7 +355,7 @@ if symbol:
         st.markdown("Este valor representa la variabilidad histórica del precio del activo. Una mayor volatilidad indica mayor riesgo.")
 
     elif seccion == "Simulación de Monte Carlo":
-        st.markdown("### Simulación de Monte Carlo")
+        st.markdown("<h3 style='color:#4ade80'> Simulación de Monte Carlo </h3>", unsafe_allow_html=True)
         st.markdown("""
         Esta simulación estima posibles trayectorias futuras del precio basandose en la volatilidad historica y rendimiento promedio diario.
         Sirve para visualizar escenarios de riesgo y retorno. 
@@ -389,7 +389,7 @@ if symbol:
         st.pyplot(fig_mc)
 
     elif seccion == "Análisis Estadístico":
-        st.markdown("### Análisis estadístico del precio de cierre")
+        st.markdown("<h3 style='color:#4ade80'> Análisis Estadístico de Precios del Cierre</h3>", unsafe_allow_html=True)
         st.write("Este análisis resume el comportamiento histórico del precio.")
 
         resumen = hist["Close"].describe()
@@ -401,7 +401,7 @@ if symbol:
         st.pyplot(fig_stats)
 
     elif seccion == "Comparación Contra Índice":
-        st.markdown("### Comparación contra S&P 500")
+        st.markdown("<h3 style='color:#4ade80'> Comparación contra S&P 500 </h3>", unsafe_allow_html=True)
         st.write("Se compara el rendimiento del ticker con el índice SPY.")
 
         spy = yf.Ticker("SPY").history(period="5y")["Close"]
@@ -419,7 +419,7 @@ if symbol:
         st.pyplot(fig_cmp)
 
     elif seccion == "Medias Móviles":
-        st.markdown("### Medias Móviles")
+        st.markdown("<h3 style='color:#4ade80'> Medias Móviles </h3>", unsafe_allow_html=True)
         st.write("Promedios móviles de corto y largo plazo.")
 
         hist["MA50"] = hist["Close"].rolling(window=50).mean()
@@ -434,7 +434,7 @@ if symbol:
         st.pyplot(fig_ma)
 
     elif seccion == "Cartera Eficiente":
-        st.markdown("### Cartera eficiente (teoría de Markowitz)")
+        st.markdown("<h3 style='color:#4ade80'> Cartera Eficiente (Teoria de Markowitz) </h3>", unsafe_allow_html=True)
         tickers_input = st.text_input("Ingresa tickers separados por comas (ej: AAPL,MSFT,NVDA)")
 
     if tickers_input:
@@ -450,6 +450,13 @@ if symbol:
             st.stop()
 
         data = data.dropna()
+        st.markdown("#### 📅 Últimos precios históricos de los activos seleccionados")
+        st.data_editor(
+            data.tail(),
+            use_container_width=True,
+            num_rows="dynamic",
+            disabled=True
+        )
         returns = data.pct_change().dropna()
 
         n_assets = len(tickers)
