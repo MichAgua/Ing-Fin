@@ -5,33 +5,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-@st.cache_data
-def obtener_historial(ticker_symbol: str, periodo="5y"):
-    return yf.Ticker(ticker_symbol).history(period=periodo, auto_adjust=True)
-
-@st.cache_data
-def obtener_info_ticker(ticker_symbol: str):
-    return yf.Ticker(ticker_symbol).info
-
-@st.cache_data(ttl=86400)
-def obtener_cierre_spy(periodo="5y"):
-    try:
-        return yf.Ticker("SPY").history(period=periodo)["Close"]
-    except:
-        return pd.Series()
-
-@st.cache_data
-def obtener_cierre_masivo(tickers: list, periodo="3y"):
-    data = {}
-    for t in tickers:
-        try:
-            precios = yf.Ticker(t).history(period=periodo, auto_adjust=True)["Close"]
-            if not precios.empty:
-                data[t] = precios
-        except:
-            continue
-    return pd.DataFrame(data)
-
 st.set_page_config(page_title="The Worlds Foremost and Most Advanced Analyst",layout="wide")
 
 st.markdown("""
