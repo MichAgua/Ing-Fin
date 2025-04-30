@@ -107,13 +107,22 @@ if symbol:
         st.stop()
 
     try:
+        hist = yf.download(symbol, period="5y", auto_adjust=True)
+        if hist is None or hist.empty:
+            raise ValueError("No se encontraron datos históricos.")
         ticker = yf.Ticker(symbol)
-        info = get_company_info(ticker)
+        info = None
 
+    except Exception as e:
+        if "rate limit" in str(e).lower():
+            st.warning(" Yahoo Finance está limitando las consultas. Espera unos minutos y vuelve a intentarlo.")
+        else:
+            st.error(f" Error al obtener la información: {e}")
+        st.stop()
+    try:
         if not info or info is None:
             raise ValueError("No se pudo obtener la información del ticker.")
 
-        hist = ticker.history(period="5y")
         if hist is None or hist.empty:
             raise ValueError("No se encontraron datos históricos para este ticker.")
 
@@ -233,10 +242,6 @@ def comparar_pb_sector(pb, sector):
         return "Información no disponible"
     
 if symbol:
-    ticker = yf.Ticker(symbol)
-    
-    hist = ticker.history(period="5y")
-
     seccion = st.radio(
     "Selecciona lo que te gustaria visualizar:",
     (
@@ -254,6 +259,12 @@ if symbol:
     ),
     horizontal=True
 )
+    if info is None:
+        try:
+            info = ticker.info
+        except Exception as e:
+            st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
+            st.stop()
 
     if seccion == "Información Basica":
         st.markdown(f"### {info.get('Nombre', 'Nombre no disponible')}")
@@ -261,6 +272,13 @@ if symbol:
         col1.markdown(f"**Nombre:** {info['Nombre']}")
         col2.markdown(f"**País:** {info['País']}")
         col3.markdown(f"**Sector:** {info['Sector']}")
+
+    if info is None:
+        try:
+            info = ticker.info
+        except Exception as e:
+            st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
+            st.stop()
 
     elif seccion == "Industria y Descripción":
         st.markdown("<h3 style='color:#4ade80'> Industria y Descripción </h3>", unsafe_allow_html=True)
@@ -278,6 +296,13 @@ if symbol:
             unsafe_allow_html=True)
 
         with col7:
+
+            if info is None:
+                try:
+                    info = ticker.info
+                except Exception as e:
+                    st.warning("⚠️ No se pudo cargar la información detallada. Posible límite de uso.")
+                    st.stop()
             forward_pe = info['Forward PE']
             interpretacion_pe = interpretar_forward_pe(forward_pe)
             st.markdown(f"**Forward PE:** {forward_pe}")
@@ -312,7 +337,6 @@ if symbol:
     elif seccion == "Gráfico de Precios Historicos":
         st.markdown("<h3 style='color:#4ade80'> Gráfico de Precios Historicos (ultimos 5 años) </h3>", unsafe_allow_html=True)
         st.markdown("Este grafico muestra la evolución del precio de cierre ajustado en los últimos cinco años.")
-        hist = ticker.history(period="5y")
 
         fig, ax = plt.subplots(figsize=(6, 3))
         sns.lineplot(data=hist, x=hist.index, y="Close", ax=ax, color='royalblue')
@@ -450,7 +474,7 @@ if symbol:
             st.stop()
 
         data = data.dropna()
-        st.markdown("#### 📅 Últimos precios históricos de los activos seleccionados")
+        st.markdown("#### Últimos precios históricos de los activos seleccionados")
         st.data_editor(
             data.tail(),
             use_container_width=True,
