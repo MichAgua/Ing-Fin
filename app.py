@@ -13,6 +13,13 @@ def obtener_historial(ticker_symbol: str, periodo="5y"):
 def obtener_info_ticker(ticker_symbol: str):
     return yf.Ticker(ticker_symbol).info
 
+@st.cache_data(ttl=86400)
+def obtener_cierre_spy(periodo="5y"):
+    try:
+        return yf.Ticker("SPY").history(period=periodo)["Close"]
+    except:
+        return pd.Series()
+
 @st.cache_data
 def obtener_cierre_masivo(tickers: list, periodo="3y"):
     data = {}
@@ -461,7 +468,11 @@ if symbol:
         st.markdown("<h3 style='color:#4ade80'> Comparación contra S&P 500 </h3>", unsafe_allow_html=True)
         st.write("Se compara el rendimiento del ticker con el índice SPY.")
 
-        spy = yf.Ticker("SPY").history(period="5y")["Close"]
+    try:
+        spy = obtener_cierre_spy()
+        if spy.empty:
+            raise ValueError("No se pudieron obtener datos del índice SPY.")
+        
         merged = pd.DataFrame({
             symbol: hist["Close"],
             "SPY": spy
@@ -474,6 +485,10 @@ if symbol:
         ax_cmp.set_title(f"Comparación de {symbol} contra SPY")
         ax_cmp.set_ylabel("Precio Normalizado")
         st.pyplot(fig_cmp)
+
+    except Exception as e:
+        st.warning("⚠️ No se pudo obtener la comparación con SPY. Puede ser por límite de consultas.")
+        st.error(f"Detalle técnico: {e}")
 
     elif seccion == "Medias Móviles":
         st.markdown("<h3 style='color:#4ade80'> Medias Móviles </h3>", unsafe_allow_html=True)
