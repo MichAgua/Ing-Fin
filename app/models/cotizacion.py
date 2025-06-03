@@ -3,8 +3,8 @@ from typing import Optional
 from datetime import datetime
 
 class Cotizacion(SQLModel, table=True):
-    __tablename__ = "users"  # For User model
-    
+    __tablename__ = "cotizaciones"  # For User model
+
     id: Optional[int] = Field(default=None, primary_key=True)
     descripcion: str
     precio_unitario: float
