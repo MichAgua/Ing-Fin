@@ -1,12 +1,15 @@
-import streamlit as st
-from sqlmodel import Session, select
-from app.database import engine
-from app.models.user import User
-from app.models.pedido import Pedido
-from app.models.bitacora import Bitacora
-from passlib.hash import bcrypt
-from datetime import datetime
-import pandas as pd
+from sqlmodel import SQLModel, Field
+from typing import Optional
+
+class User(SQLModel, table=True):
+    __tablename__ = "users"
+    __table_args__ = {"extend_existing": True}
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    username: str = Field(index=True, unique=True)
+    full_name: str
+    hashed_password: str
+    role: str
 
 # Inicio de sesión
 st.title("Inicio de sesión")
