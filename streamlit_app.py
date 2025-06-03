@@ -4,6 +4,7 @@ from app.database import engine
 from app.models.user import User
 from app.models.pedido import Pedido
 from app.models.bitacora import Bitacora
+from app.models.cotizacion import Cotizacion  
 from passlib.hash import bcrypt
 from datetime import datetime
 import pandas as pd
