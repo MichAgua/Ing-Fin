@@ -136,108 +136,49 @@ if st.session_state.user:
             col1, col2, col3 = st.columns(3)
 
             with col1:
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>👕</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Ventas</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="ventas_btn", use_container_width=True):
-                        st.session_state.selected_area = "ventas"
-                        st.session_state.selected = "🏠 Inicio"
-                        st.rerun()
+                if st.button("👕 Ventas", key="ventas_btn", use_container_width=True):
+                    st.session_state.selected_area = "ventas"
+                    st.session_state.selected = "🏠 Inicio"
+                    st.rerun()
             with col2:
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>📦</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Almacén</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="almacen_btn", use_container_width=True):
-                        st.session_state.selected_area = "almacen"
-                        st.session_state.selected = "🏠 Inicio"
-                        st.rerun()
+                if st.button("📦 Almacén", key="almacen_btn", use_container_width=True):
+                    st.session_state.selected_area = "almacen"
+                    st.session_state.selected = "🏠 Inicio"
+                    st.rerun()
             with col3:
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>🧾</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Contabilidad</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="contabilidad_btn", use_container_width=True):
-                        st.session_state.selected_area = "contabilidad"
-                        st.session_state.selected = "🏠 Inicio"
-                        st.rerun()
+                if st.button("🧾 Contabilidad", key="contabilidad_btn", use_container_width=True):
+                    st.session_state.selected_area = "contabilidad"
+                    st.session_state.selected = "🏠 Inicio"
+                    st.rerun()
 
             col4, col5, col6 = st.columns(3)
             with col4:
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>👥</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Recursos Humanos</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="rh_btn", use_container_width=True):
-                        st.session_state.selected_area = "rh"
-                        st.session_state.selected = "🏠 Inicio"
-                        st.rerun()
+                if st.button("👥 Recursos Humanos", key="rh_btn", use_container_width=True):
+                    st.session_state.selected_area = "rh"
+                    st.session_state.selected = "🏠 Inicio"
+                    st.rerun()
             with col5:
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>🛠️</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Admin</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="admin_btn", use_container_width=True):
-                        st.session_state.selected_area = "admin"
-                        st.session_state.selected = "🏠 Inicio"
-                        st.rerun()
+                if st.button("🛠️ Admin", key="admin_btn", use_container_width=True):
+                    st.session_state.selected_area = "admin"
+                    st.session_state.selected = "🏠 Inicio"
+                    st.rerun()
             with col6:
-                # Pedidos button
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>📦</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Pedidos</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="pedidos_btn", use_container_width=True):
-                        st.session_state.selected_area = "pedidos"
-                        st.session_state.selected = "📦 Pedidos"
-                        st.rerun()
+                if st.button("📦 Pedidos", key="pedidos_btn", use_container_width=True):
+                    st.session_state.selected_area = "pedidos"
+                    st.session_state.selected = "📦 Pedidos"
+                    st.rerun()
 
             col7, col8 = st.columns(2)
             with col7:
-                # Bitácora button
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>📝</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Bitácora</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="bitacora_btn", use_container_width=True):
-                        st.session_state.selected_area = "bitacora"
-                        st.session_state.selected = "📝 Bitácora"
-                        st.rerun()
+                if st.button("📝 Bitácora", key="bitacora_btn", use_container_width=True):
+                    st.session_state.selected_area = "bitacora"
+                    st.session_state.selected = "📝 Bitácora"
+                    st.rerun()
             with col8:
-                # Reportes button
-                with st.container():
-                    st.markdown("""
-                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
-                            <div style='font-size:2rem;'>📊</div>
-                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Reportes</div>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    if st.button("", key="reportes_btn", use_container_width=True):
-                        st.session_state.selected_area = "reportes"
-                        st.session_state.selected = "📊 Reportes"
-                        st.rerun()
+                if st.button("📊 Reportes", key="reportes_btn", use_container_width=True):
+                    st.session_state.selected_area = "reportes"
+                    st.session_state.selected = "📊 Reportes"
+                    st.rerun()
 
             st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
 
