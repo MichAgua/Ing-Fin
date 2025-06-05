@@ -38,35 +38,28 @@ with st.container():
     st.markdown("<h2 style='color: #333; font-weight: 700;'>🛡️ Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color: #666; font-weight: 500; margin-bottom: 1.5rem;'>De acuerdo al área en el que trabajes, podrás administrar pedidos, crear cotizaciones, modificar órdenes y trabajar de manera eficiente.</p>", unsafe_allow_html=True)
 
-    # Improved Emoji rotation area in main page
+    # Improved Emoji rotation area in main page (Streamlit Cloud compatible)
     emoji_list = ["📦", "📄", "📋", "👷", "✂️", "🧾"]
-    emoji_script = f"""
-<script>
-  let emojis = {emoji_list};
-  let index = 0;
-  function rotateEmoji() {{
-    const el = document.getElementById("emoji-rotator");
-    if (el) {{
-      el.innerHTML = emojis[index % emojis.length];
-      index++;
-    }}
-  }}
-  setInterval(rotateEmoji, 8000); // Change every 8 seconds
-  document.addEventListener("DOMContentLoaded", rotateEmoji);
-</script>
-"""
-
-    st.markdown("""
+    emoji_script = """
 <div style='text-align: center; margin-top: 3rem;'>
   <div id='emoji-rotator' style='font-size: 6rem;'>📦</div>
   <div style='color: #0d6efd; font-size: 1.8rem; font-weight: 700; margin-top: 1rem;'>
     Sistema seguro y eficiente para la gestión de uniformes.
   </div>
 </div>
-""", unsafe_allow_html=True)
-
-    import streamlit.components.v1 as components
-    components.html(emoji_script, height=0)
+<script>
+  const emojis = ["📦", "📄", "📋", "👷", "✂️", "🧾"];
+  let idx = 0;
+  setInterval(() => {
+    const container = document.getElementById("emoji-rotator");
+    if (container) {
+      idx = (idx + 1) % emojis.length;
+      container.innerHTML = emojis[idx];
+    }
+  }, 5000);  // Change every 5 seconds
+</script>
+"""
+    st.markdown(emoji_script, unsafe_allow_html=True)
 
 if "user" not in st.session_state:
     st.session_state.user = None
