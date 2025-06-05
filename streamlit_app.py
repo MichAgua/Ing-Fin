@@ -133,57 +133,40 @@ if st.session_state.user:
                 </div>
             """, unsafe_allow_html=True)
 
-            # Restore original large white buttons for area selection with correct navigation
+            # Clean layout: 8 roles as large white cards with centered content
             st.markdown("<br>", unsafe_allow_html=True)
-            col1, col2, col3 = st.columns(3)
-            with col1:
-                if st.button("👕 Ventas", key="ventas_btn", help="Área de Ventas"):
-                    st.session_state.selected_area = "ventas"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
-            with col2:
-                if st.button("📦 Almacén", key="almacen_btn", help="Área de Almacén"):
-                    st.session_state.selected_area = "almacen"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
-            with col3:
-                if st.button("🧾 Contabilidad", key="contabilidad_btn", help="Área de Contabilidad"):
-                    st.session_state.selected_area = "contabilidad"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
+            area_buttons = [
+                ("👕 Ventas", "ventas"),
+                ("📦 Almacén", "almacen"),
+                ("🧾 Contabilidad", "contabilidad"),
+                ("👥 Recursos Humanos", "rh"),
+                ("🛠️ Admin", "admin"),
+                ("📦 Pedidos", "pedidos"),
+                ("📝 Bitácora", "bitacora"),
+                ("📊 Reportes", "reportes"),
+            ]
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            col4, col5, col6 = st.columns(3)
-            with col4:
-                if st.button("👥 Recursos Humanos", key="rh_btn", help="Área de RH"):
-                    st.session_state.selected_area = "rh"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
-            with col5:
-                if st.button("🛠️ Admin", key="admin_btn", help="Área de Administración"):
-                    st.session_state.selected_area = "admin"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
-            with col6:
-                if st.button("📦 Pedidos", key="pedidos_btn", help="Ver todos los pedidos"):
-                    st.session_state.selected_area = "pedidos"
-                    st.session_state.selected = "📦 Pedidos"
-                    st.rerun()
+            rows = [area_buttons[i:i+3] for i in range(0, len(area_buttons), 3)]
 
-            st.markdown("<br>", unsafe_allow_html=True)
-            col7, col8 = st.columns(2)
-            with col7:
-                if st.button("📝 Bitácora", key="bitacora_btn", help="Registro de cambios"):
-                    st.session_state.selected_area = "bitacora"
-                    st.session_state.selected = "📝 Bitácora"
-                    st.rerun()
-            with col8:
-                if st.button("📊 Reportes", key="reportes_btn", help="Dashboard visual"):
-                    st.session_state.selected_area = "reportes"
-                    st.session_state.selected = "📊 Reportes"
-                    st.rerun()
-
-            st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
+            for row in rows:
+                cols = st.columns(len(row))
+                for col, (label, value) in zip(cols, row):
+                    with col:
+                        if st.button(label, use_container_width=True):
+                            st.session_state.selected_area = value
+                            label_map = {
+                                "ventas": "📦 Pedidos",
+                                "almacen": "📦 Pedidos",
+                                "contabilidad": "📦 Pedidos",
+                                "rh": "📦 Pedidos",
+                                "admin": "📦 Pedidos",
+                                "pedidos": "📦 Pedidos",
+                                "bitacora": "📝 Bitácora",
+                                "reportes": "📊 Reportes"
+                            }
+                            st.session_state.selected = label_map.get(value, "📦 Pedidos")
+                            st.rerun()
+                st.markdown("<br>", unsafe_allow_html=True)
 
     elif selected == "👤 Mi Perfil":
         with st.container():
