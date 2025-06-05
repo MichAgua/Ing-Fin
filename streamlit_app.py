@@ -300,7 +300,7 @@ if st.session_state.user:
                         pedidos = []
                 else:
                     try:
-                        pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
+                        pedidos = session.exec(select(Pedido)).all()
                     except Exception as e:
                         st.error(f"⚠️ No se pudieron cargar los pedidos. Error: {e}")
                         pedidos = []

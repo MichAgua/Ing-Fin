@@ -17,7 +17,6 @@ pedidos = [
         costo_estimado=5000.0,
         explosion_materiales="Botones metálicos, bordado frontal, etiqueta interna",
         fecha_entrega=date(2025, 7, 1),
-        usuario_id=1,
         fecha=datetime.now(),
         status="pendiente"
     ),
@@ -33,7 +32,6 @@ pedidos = [
         costo_estimado=3000.0,
         explosion_materiales="Cierre grueso, logo bordado, forro térmico",
         fecha_entrega=date(2025, 6, 20),
-        usuario_id=1,
         fecha=datetime.now(),
         status="pendiente"
     ),
@@ -49,7 +47,6 @@ pedidos = [
         costo_estimado=6000.0,
         explosion_materiales="Cierre de metal, botón reforzado, etiquetas interiores",
         fecha_entrega=date(2025, 6, 28),
-        usuario_id=1,
         fecha=datetime.now(),
         status="pendiente"
     )
