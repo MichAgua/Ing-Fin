@@ -12,16 +12,6 @@ import pandas as pd
 st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
 st.title("📋 Sistema de Uniformes")
 
-st.title("Inicio de sesión")
-username = st.text_input("Usuario")
-password = st.text_input("Contraseña", type="password")
-
-with Session(engine) as session:
-    user = session.exec(select(User).where(User.username == username)).first()
-
-    if user and bcrypt.verify(password, user.hashed_password):
-        st.success(f"Bienvenido, {user.full_name} ({user.role})")
-
 if "user" not in st.session_state:
     st.session_state.user = None
 
