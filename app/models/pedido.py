@@ -3,6 +3,8 @@ from typing import Optional
 from datetime import datetime
 
 class Pedido(SQLModel, table=True):
+    __tablename__ = "pedidos"  # ← AGREGA ESTA LÍNEA
+
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
     direccion: str
@@ -17,7 +19,7 @@ class Pedido(SQLModel, table=True):
     fecha_entrega: datetime
     usuario_id: int
     fecha: datetime
-    status: str = "pendiente"
+    status: str = Field(default="pendiente")  # ← mejora con Field()
     boton: Optional[str] = None
     cierre: Optional[str] = None
     estampado: Optional[str] = None
