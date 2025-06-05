@@ -133,39 +133,39 @@ if st.session_state.user:
                 </div>
             """, unsafe_allow_html=True)
 
-            # Restore original visually appealing and functional area buttons
+            # Restore original large white buttons for area selection with correct navigation
             st.markdown("<br>", unsafe_allow_html=True)
             col1, col2, col3 = st.columns(3)
             with col1:
-                if st.button("👕 Ventas", key="ventas_btn"):
+                if st.button("👕 Ventas", key="ventas_btn", help="Área de Ventas"):
                     st.session_state.selected_area = "ventas"
-                    st.session_state.selected = "🏠 Inicio"
+                    st.session_state.selected = "📦 Pedidos"
                     st.rerun()
             with col2:
-                if st.button("📦 Almacén", key="almacen_btn"):
+                if st.button("📦 Almacén", key="almacen_btn", help="Área de Almacén"):
                     st.session_state.selected_area = "almacen"
-                    st.session_state.selected = "🏠 Inicio"
+                    st.session_state.selected = "📦 Pedidos"
                     st.rerun()
             with col3:
-                if st.button("🧾 Contabilidad", key="contabilidad_btn"):
+                if st.button("🧾 Contabilidad", key="contabilidad_btn", help="Área de Contabilidad"):
                     st.session_state.selected_area = "contabilidad"
-                    st.session_state.selected = "🏠 Inicio"
+                    st.session_state.selected = "📦 Pedidos"
                     st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
             col4, col5, col6 = st.columns(3)
             with col4:
-                if st.button("👥 Recursos Humanos", key="rh_btn"):
+                if st.button("👥 Recursos Humanos", key="rh_btn", help="Área de RH"):
                     st.session_state.selected_area = "rh"
-                    st.session_state.selected = "🏠 Inicio"
+                    st.session_state.selected = "📦 Pedidos"
                     st.rerun()
             with col5:
-                if st.button("🛠️ Admin", key="admin_btn"):
+                if st.button("🛠️ Admin", key="admin_btn", help="Área de Administración"):
                     st.session_state.selected_area = "admin"
-                    st.session_state.selected = "🏠 Inicio"
+                    st.session_state.selected = "📦 Pedidos"
                     st.rerun()
             with col6:
-                if st.button("📦 Pedidos", key="pedidos_btn"):
+                if st.button("📦 Pedidos", key="pedidos_btn", help="Ver todos los pedidos"):
                     st.session_state.selected_area = "pedidos"
                     st.session_state.selected = "📦 Pedidos"
                     st.rerun()
@@ -173,12 +173,12 @@ if st.session_state.user:
             st.markdown("<br>", unsafe_allow_html=True)
             col7, col8 = st.columns(2)
             with col7:
-                if st.button("📝 Bitácora", key="bitacora_btn"):
+                if st.button("📝 Bitácora", key="bitacora_btn", help="Registro de cambios"):
                     st.session_state.selected_area = "bitacora"
                     st.session_state.selected = "📝 Bitácora"
                     st.rerun()
             with col8:
-                if st.button("📊 Reportes", key="reportes_btn"):
+                if st.button("📊 Reportes", key="reportes_btn", help="Dashboard visual"):
                     st.session_state.selected_area = "reportes"
                     st.session_state.selected = "📊 Reportes"
                     st.rerun()
