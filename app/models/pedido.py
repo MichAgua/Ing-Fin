@@ -4,6 +4,7 @@ from datetime import datetime
 
 class Pedido(SQLModel, table=True):
     __tablename__ = "pedidos"  # ← AGREGA ESTA LÍNEA
+    __table_args__ = {"extend_existing": True}  # ← OPCIONAL PERO ÚTIL
 
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
@@ -19,7 +20,7 @@ class Pedido(SQLModel, table=True):
     fecha_entrega: datetime
     usuario_id: int
     fecha: datetime
-    status: str = Field(default="pendiente")  # ← mejora con Field()
+    status: str = Field(default="pendiente")
     boton: Optional[str] = None
     cierre: Optional[str] = None
     estampado: Optional[str] = None
