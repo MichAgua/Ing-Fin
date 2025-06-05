@@ -38,6 +38,29 @@ with st.container():
     st.markdown("<h2 style='color: #333; font-weight: 700;'>🛡️ Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color: #666; font-weight: 500; margin-bottom: 1.5rem;'>De acuerdo al área en el que trabajes, podrás administrar pedidos, crear cotizaciones, modificar órdenes y trabajar de manera eficiente.</p>", unsafe_allow_html=True)
 
+    # Emoji rotation area in main page
+    emoji_list = ["📦", "📄", "📋", "👷", "✂️", "🧾"]
+    emoji_script = f"""
+    <script>
+      let emojis = {emoji_list};
+      let index = 0;
+      function rotateEmoji() {{
+        const el = document.getElementById("emoji-rotator");
+        if (el) {{
+          el.innerHTML = emojis[index % emojis.length];
+          index++;
+        }}
+      }}
+      setInterval(rotateEmoji, 7000); // Change every 7 seconds
+    </script>
+    """
+
+    st.markdown("<div style='height: 60px; font-size: 2.5rem; text-align: center; margin-top: 1rem;' id='emoji-rotator'>📦</div>", unsafe_allow_html=True)
+    import streamlit.components.v1 as components
+    components.html(emoji_script, height=0)
+
+    st.markdown("<div style='text-align: center; color: #0d6efd; font-weight: 600; font-size: 0.95rem; padding-top: 0.5rem;'>Sistema seguro y eficiente para la gestión de uniformes.</div>", unsafe_allow_html=True)
+
 if "user" not in st.session_state:
     st.session_state.user = None
 
@@ -76,31 +99,6 @@ with st.sidebar:
                     else:
                         st.session_state.user = user
                         st.success(f"Bienvenido, {user.full_name} ({user.role})")
-    with col2:
-        from time import sleep
-        import streamlit.components.v1 as components
-
-        # Define the rotating emojis
-        emoji_list = ["📦", "📄", "📋", "👷", "✂️", "🧾"]
-        emoji_script = f"""
-        <script>
-          let emojis = {emoji_list};
-          let index = 0;
-          function rotateEmoji() {{
-            const el = document.getElementById("emoji-rotator");
-            if (el) {{
-              el.innerHTML = emojis[index % emojis.length];
-              index++;
-            }}
-          }}
-          setInterval(rotateEmoji, 3000);
-        </script>
-        """
-
-        st.markdown("<div style='height: 50px; font-size: 2rem; text-align: center;' id='emoji-rotator'>📦</div>", unsafe_allow_html=True)
-        components.html(emoji_script, height=0)
-
-        st.markdown("<div style='padding-top: 0.5rem; color: #0d6efd; font-weight: 600; font-size: 0.9rem; text-align: center;'>Sistema seguro y eficiente para la gestión de uniformes.</div>", unsafe_allow_html=True)
 
 if st.session_state.user:
     st.sidebar.success(f"Sesión iniciada: {st.session_state.user.full_name}")
