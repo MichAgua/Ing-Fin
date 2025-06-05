@@ -168,8 +168,8 @@ if st.session_state.user:
             from streamlit.runtime.scriptrunner import get_script_run_ctx
 
             ctx = get_script_run_ctx()
-            if "area" in stlit.experimental_get_query_params():
-                selected_area = stlit.experimental_get_query_params()["area"][0]
+            if "area" in stlit.query_params:
+                selected_area = stlit.query_params["area"]
                 st.session_state.selected_area = selected_area
                 label_map = {
                     "ventas": "📦 Pedidos",
