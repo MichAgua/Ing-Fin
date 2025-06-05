@@ -5,14 +5,13 @@ from app.database import engine
 from app.models.pedido import Pedido
 from app.models.user import User
 from app.models.bitacora import Bitacora
-from app.models.cotizacion import Cotizacion  
+from app.models.cotizacion import Cotizacion
 from passlib.hash import bcrypt
 from datetime import datetime
 import pandas as pd
 
 
 from sqlmodel import SQLModel
-from app.database import engine
 SQLModel.metadata.create_all(engine)
 
 st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
