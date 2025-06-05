@@ -276,6 +276,7 @@ if st.session_state.user:
                                     status="pendiente"
                                 )
                                 session.add(nuevo)
+                                session.commit()  # Commit first to generate the ID
                                 session.add(Bitacora(
                                     pedido_id=nuevo.id,
                                     usuario_id=nuevo.usuario_id,
