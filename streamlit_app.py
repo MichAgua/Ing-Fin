@@ -2,16 +2,18 @@ import streamlit as st
 from streamlit.components.v1 import html
 from sqlmodel import Session, select
 from app.database import engine
-from app.models.user import User
 from app.models.pedido import Pedido
-from sqlmodel import SQLModel
-SQLModel.metadata.create_all(engine)
-
+from app.models.user import User
 from app.models.bitacora import Bitacora
 from app.models.cotizacion import Cotizacion  
 from passlib.hash import bcrypt
 from datetime import datetime
 import pandas as pd
+
+
+from sqlmodel import SQLModel
+from app.database import engine
+SQLModel.metadata.create_all(engine)
 
 st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
 
