@@ -1,4 +1,4 @@
-from sqlmodel import SQLModel, Field, Relationship
+from sqlmodel import SQLModel, Field
 from typing import Optional
 from datetime import datetime
 
@@ -18,11 +18,9 @@ class Pedido(SQLModel, table=True):
     costo_estimado: float
     explosion_materiales: str
     fecha_entrega: datetime
-    usuario_id: int
     fecha: datetime
     status: str = Field(default="pendiente")
     boton: Optional[str] = None
     cierre: Optional[str] = None
     estampado: Optional[str] = None
     bordado: Optional[str] = None
-
