@@ -203,6 +203,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="pedidos_btn", use_container_width=True):
                         st.session_state.selected_area = "pedidos"
+                        st.session_state.selected = "📦 Pedidos"
                         st.rerun()
 
             col7, col8 = st.columns(2)
@@ -217,6 +218,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="bitacora_btn", use_container_width=True):
                         st.session_state.selected_area = "bitacora"
+                        st.session_state.selected = "📝 Bitácora"
                         st.rerun()
             with col8:
                 # Reportes button
@@ -229,6 +231,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="reportes_btn", use_container_width=True):
                         st.session_state.selected_area = "reportes"
+                        st.session_state.selected = "📊 Reportes"
                         st.rerun()
 
             st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
