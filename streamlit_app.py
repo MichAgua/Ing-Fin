@@ -35,14 +35,14 @@ st.markdown("""
 
 # Sleek welcome section
 with st.container():
-    st.markdown("<h2 style='color: #333;'>👕 Sistema de Gestión de Uniformes</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #666;'>Administra pedidos, usuarios y reportes de manera eficiente.</p>", unsafe_allow_html=True)
+    st.markdown("<h2 style='color: #333;'>Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #666;'>De acuerdo al area en el que trabajes, podras administrar pedidos, crear cotizaciónes, modificar ordenes y trabajar de manera eficiente.</p>", unsafe_allow_html=True)
 
 if "user" not in st.session_state:
     st.session_state.user = None
 
 with st.sidebar:
-    st.markdown("<h3 style='margin-bottom: 0.5rem;'>🔐 Login / Registro</h3>", unsafe_allow_html=True)
+    st.markdown("<h3 style='margin-bottom: 0.5rem;'>Login / Registro</h3>", unsafe_allow_html=True)
     tab = st.radio("Selecciona", ["Iniciar sesión", "Registrar usuario"])
     username = st.text_input("Usuario")
     password = st.text_input("Contraseña", type="password")
@@ -78,9 +78,9 @@ with st.sidebar:
 if st.session_state.user:
     st.sidebar.success(f"Sesión iniciada: {st.session_state.user.full_name}")
     role = st.session_state.user.role
-    allowed_modules = ["🏠 Inicio", "👤 Mi Perfil", "📦 Pedidos", "📚 Bitácora"]
+    allowed_modules = [" Inicio", " Mi Perfil", " Pedidos", " Bitácora"]
     if role == "admin":
-        allowed_modules.append("📊 Reportes")
+        allowed_modules.append(" Reportes")
 
     selected = st.sidebar.radio("Módulo", allowed_modules)
 
@@ -91,7 +91,7 @@ if st.session_state.user:
 
     elif selected == "👤 Mi Perfil":
         with stylable_container("section-header", css_styles="margin-bottom: 1rem; padding: 1rem; background-color: #f1f3f5; border-radius: 6px;"):
-            st.markdown("### 👤 Mi Perfil")
+            st.markdown("###  Mi Perfil")
         st.write({
             "ID": st.session_state.user.id,
             "Usuario": st.session_state.user.username,
@@ -99,9 +99,9 @@ if st.session_state.user:
             "Rol": st.session_state.user.role,
         })
 
-    elif selected == "📦 Pedidos":
+    elif selected == " Pedidos":
         with stylable_container("section-header", css_styles="margin-bottom: 1rem; padding: 1rem; background-color: #f1f3f5; border-radius: 6px;"):
-            st.markdown("### 📦 Gestión de Pedidos")
+            st.markdown("###  Gestión de Pedidos")
         with Session(engine) as session:
             if role in ["ventas", "admin"]:
                 st.subheader("Crear nuevo pedido")
@@ -134,37 +134,37 @@ if st.session_state.user:
             for p in pedidos:
                 cols = st.columns([4, 2, 2])
                 with cols[0]:
-                    st.write(f"📌 Pedido #{p.id} — Cliente: {p.cliente} — Fecha: {p.fecha.strftime('%Y-%m-%d')} — Estado: {p.status}")
+                    st.write(f" Pedido #{p.id} — Cliente: {p.cliente} — Fecha: {p.fecha.strftime('%Y-%m-%d')} — Estado: {p.status}")
                 if role == "admin":
                     with cols[1]:
-                        if st.button(f"✅ Aprobar #{p.id}", use_container_width=True):
+                        if st.button(f" Aprobar #{p.id}", use_container_width=True):
                             p.status = "aprobado"
                             session.add(p)
                             session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido aprobado", timestamp=datetime.utcnow()))
                             session.commit()
                             st.rerun()
                     with cols[2]:
-                        if st.button(f"❌ Rechazar #{p.id}", use_container_width=True):
+                        if st.button(f" Rechazar #{p.id}", use_container_width=True):
                             p.status = "rechazado"
                             session.add(p)
                             session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido rechazado", timestamp=datetime.utcnow()))
                             session.commit()
                             st.rerun()
 
-    elif selected == "📚 Bitácora":
+    elif selected == " Bitácora":
         with stylable_container("section-header", css_styles="margin-bottom: 1rem; padding: 1rem; background-color: #f1f3f5; border-radius: 6px;"):
-            st.markdown("### 📚 Historial de Acciones")
+            st.markdown("###  Historial de Acciones")
         with Session(engine) as session:
             if role == "admin":
                 bitacora = session.exec(select(Bitacora)).all()
             else:
                 bitacora = session.exec(select(Bitacora).where(Bitacora.usuario_id == st.session_state.user.id)).all()
             for b in bitacora:
-                st.write(f"🕒 {b.timestamp.strftime('%Y-%m-%d %H:%M:%S')} — Pedido #{b.pedido_id} — Acción: {b.accion}")
+                st.write(f" {b.timestamp.strftime('%Y-%m-%d %H:%M:%S')} — Pedido #{b.pedido_id} — Acción: {b.accion}")
 
-    elif selected == "📊 Reportes":
+    elif selected == " Reportes":
         with stylable_container("section-header", css_styles="margin-bottom: 1rem; padding: 1rem; background-color: #f1f3f5; border-radius: 6px;"):
-            st.markdown("### 📊 Dashboard de Reportes")
+            st.markdown("### Dashboard de Reportes")
         with Session(engine) as session:
             pedidos = session.exec(select(Pedido)).all()
             if pedidos:
