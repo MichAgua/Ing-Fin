@@ -10,5 +10,3 @@ class User(SQLModel, table=True):
     full_name: str
     hashed_password: str
     role: str
-
-    pedidos: List["Pedido"] = Relationship(back_populates="usuario")

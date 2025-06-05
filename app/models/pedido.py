@@ -27,4 +27,3 @@ class Pedido(SQLModel, table=True):
     estampado: Optional[str] = None
     bordado: Optional[str] = None
 
-    usuario: Optional[User] = Relationship(back_populates="pedidos")
