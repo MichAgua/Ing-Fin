@@ -1,4 +1,7 @@
 from sqlmodel import SQLModel, create_engine, Session
+from sqlmodel import create_engine
+
+engine = create_engine("sqlite:///database.db", echo=False)
 
 DATABASE_URL = "sqlite:///./uniformes.db"
 engine = create_engine(DATABASE_URL, echo=True)
