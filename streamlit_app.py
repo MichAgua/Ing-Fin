@@ -34,13 +34,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sleek welcome section
-with stylable_container("title-container", css_styles="""
-    background-color: #f8f9fa;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-"""):
+with st.container():
     st.markdown("<h2 style='color: #333;'>👕 Sistema de Gestión de Uniformes</h2>", unsafe_allow_html=True)
     st.markdown("<p style='color: #666;'>Administra pedidos, usuarios y reportes de manera eficiente.</p>", unsafe_allow_html=True)
 
