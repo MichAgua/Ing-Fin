@@ -45,7 +45,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Sleek welcome section (only show if not logged in)
-if st.session_state.user is None:
+if st.session_state.get("user") is None:
     # Sleek welcome section
     with st.container():
         st.markdown("<h2 style='color: #333; font-weight: 700;'>🛡️ Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
