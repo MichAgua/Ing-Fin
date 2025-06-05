@@ -5,6 +5,9 @@ from app.database import engine
 from passlib.hash import bcrypt
 from datetime import datetime
 import pandas as pd
+import os
+os.environ["SQLALCHEMY_WARN_20"] = "1"
+os.environ["STREAMLIT_ENV"] = "development"
 
 
 from sqlmodel import SQLModel

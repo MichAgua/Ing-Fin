@@ -9,7 +9,7 @@ class Pedido(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
     direccion: str
-    es_muestra: bool
+    es_muestra: str
     prenda: str
     tipo_tela: str
     color: str
