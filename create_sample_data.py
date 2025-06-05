@@ -6,33 +6,28 @@ from passlib.hash import bcrypt
 from datetime import datetime
 
 engine = create_engine("sqlite:///./uniformes.db")
-
 SQLModel.metadata.create_all(engine)
 
 with Session(engine) as session:
-    # Usuarios iniciales
-    users = [
-        User(username="admin", full_name="Administrador", role="admin", hashed_password=bcrypt.hash("admin123")),
-        User(username="ventas1", full_name="Juan Ventas", role="ventas", hashed_password=bcrypt.hash("ventas123")),
-        User(username="almacen1", full_name="Ana Almacén", role="almacen", hashed_password=bcrypt.hash("almacen123"))
-    ]
-    session.add_all(users)
+    # Crear usuario principal
+    admin_user = User(username="admin", full_name="Administrador", role="admin", hashed_password=bcrypt.hash("admin123"))
+    session.add(admin_user)
     session.commit()
 
-    # Pedidos iniciales
+    # Crear pedidos de prueba
     pedidos = [
-        Pedido(cliente="Coca Cola", usuario_id=2, status="pendiente"),
-        Pedido(cliente="Oxxo", usuario_id=2, status="pendiente")
+        Pedido(cliente="Coca Cola", direccion="Av. Industria 123", usuario_id=admin_user.id, status="pendiente"),
+        Pedido(cliente="SIAPA", direccion="Calle Agua 456", usuario_id=admin_user.id, status="pendiente"),
+        Pedido(cliente="Akron", direccion="Boulevard Petróleo 789", usuario_id=admin_user.id, status="pendiente"),
     ]
     session.add_all(pedidos)
     session.commit()
 
-    # Bitácora
-    bitacora = [
-        Bitacora(pedido_id=1, usuario_id=2, accion="Pedido creado", timestamp=datetime.utcnow()),
-        Bitacora(pedido_id=2, usuario_id=2, accion="Pedido creado", timestamp=datetime.utcnow())
-    ]
-    session.add_all(bitacora)
+    # Crear bitácora para cada pedido
+    for pedido in pedidos:
+        bit = Bitacora(pedido_id=pedido.id, usuario_id=admin_user.id, accion="Pedido creado automáticamente", timestamp=datetime.utcnow())
+        session.add(bit)
+
     session.commit()
 
-print("✅ Base de datos creada con usuarios y pedidos de prueba.")
+print("✅ Base de datos creada con pedidos de prueba (Coca Cola, SIAPA, Akron).")

@@ -3,7 +3,6 @@ from typing import Optional
 from datetime import datetime
 
 class Pedido(SQLModel, table=True):
-    __tablename__ = "pedidos"
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
     direccion: str
@@ -23,4 +22,3 @@ class Pedido(SQLModel, table=True):
     cierre: Optional[str] = None
     estampado: Optional[str] = None
     bordado: Optional[str] = None
-   
