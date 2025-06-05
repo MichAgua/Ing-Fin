@@ -247,9 +247,17 @@ if st.session_state.user:
 
                 st.subheader("Lista de pedidos")
                 if role == "admin":
-                    pedidos = session.exec(select(Pedido)).all()
+                    try:
+                        pedidos = session.exec(select(Pedido)).all()
+                    except Exception as e:
+                        st.error("⚠️ No se pudieron cargar los pedidos. Verifica que las tablas estén correctamente creadas.")
+                        pedidos = []
                 else:
-                    pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
+                    try:
+                        pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
+                    except Exception as e:
+                        st.error("⚠️ No se pudieron cargar los pedidos. Verifica que las tablas estén correctamente creadas.")
+                        pedidos = []
 
                 for p in pedidos:
                     with st.expander(f"📦 Pedido #{p.id} — Cliente: {p.cliente} — Fecha: {p.fecha.strftime('%Y-%m-%d')} — Estado: {p.status.capitalize()}"):
@@ -296,9 +304,17 @@ if st.session_state.user:
             """, unsafe_allow_html=True)
             with Session(engine) as session:
                 if role == "admin":
-                    bitacora = session.exec(select(Bitacora)).all()
+                    try:
+                        bitacora = session.exec(select(Bitacora)).all()
+                    except Exception as e:
+                        st.error("⚠️ No se pudo cargar la bitácora. Verifica que las tablas estén correctamente creadas.")
+                        bitacora = []
                 else:
-                    bitacora = session.exec(select(Bitacora).where(Bitacora.usuario_id == st.session_state.user.id)).all()
+                    try:
+                        bitacora = session.exec(select(Bitacora).where(Bitacora.usuario_id == st.session_state.user.id)).all()
+                    except Exception as e:
+                        st.error("⚠️ No se pudo cargar la bitácora. Verifica que las tablas estén correctamente creadas.")
+                        bitacora = []
                 for b in bitacora:
                     st.markdown(f"📅 {b.timestamp.strftime('%Y-%m-%d %H:%M:%S')} — Pedido #{b.pedido_id} — Acción: {b.accion}")
         st.markdown("---")
