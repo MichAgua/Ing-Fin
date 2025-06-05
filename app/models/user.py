@@ -1,6 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional, List
-from app.models.pedido import Pedido  # importación directa
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
@@ -12,4 +11,4 @@ class User(SQLModel, table=True):
     hashed_password: str
     role: str
 
-    pedidos: List[Pedido] = Relationship(back_populates="usuario")
+    pedidos: List["Pedido"] = Relationship(back_populates="usuario")
