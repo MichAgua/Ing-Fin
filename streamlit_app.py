@@ -169,7 +169,7 @@ if st.session_state.user:
                         st.session_state.selected_area = "contabilidad"
                         st.rerun()
 
-            col4, col5 = st.columns(2)
+            col4, col5, col6 = st.columns(3)
             with col4:
                 with st.container():
                     st.markdown("""
@@ -191,6 +191,44 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="admin_btn", use_container_width=True):
                         st.session_state.selected_area = "admin"
+                        st.rerun()
+            with col6:
+                # Pedidos button
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>📦</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Pedidos</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="pedidos_btn", use_container_width=True):
+                        st.session_state.selected_area = "pedidos"
+                        st.rerun()
+
+            col7, col8 = st.columns(2)
+            with col7:
+                # Bitácora button
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>📝</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Bitácora</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="bitacora_btn", use_container_width=True):
+                        st.session_state.selected_area = "bitacora"
+                        st.rerun()
+            with col8:
+                # Reportes button
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>📊</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Reportes</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="reportes_btn", use_container_width=True):
+                        st.session_state.selected_area = "reportes"
                         st.rerun()
 
             st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
