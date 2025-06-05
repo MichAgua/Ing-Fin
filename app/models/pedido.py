@@ -2,9 +2,8 @@ from sqlmodel import SQLModel, Field
 from typing import Optional
 from datetime import datetime
 
-__tablename__ = "pedidos"
-
 class Pedido(SQLModel, table=True):
+    __tablename__ = "pedidos"
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
     direccion: str
