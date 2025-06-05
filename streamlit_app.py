@@ -135,6 +135,8 @@ if st.session_state.user:
 
             st.markdown("<br>", unsafe_allow_html=True)
 
+            import streamlit.components.v1 as components
+
             area_buttons = [
                 ("👕 Ventas", "ventas"),
                 ("📦 Almacén", "almacen"),
@@ -148,25 +150,42 @@ if st.session_state.user:
 
             rows = [area_buttons[i:i+3] for i in range(0, len(area_buttons), 3)]
 
+            area_clicked = st.experimental_get_query_params().get("area", [None])[0]
+            if area_clicked:
+                label_map = {
+                    "ventas": "📦 Pedidos",
+                    "almacen": "📦 Pedidos",
+                    "contabilidad": "📦 Pedidos",
+                    "rh": "📦 Pedidos",
+                    "admin": "📦 Pedidos",
+                    "pedidos": "📦 Pedidos",
+                    "bitacora": "📝 Bitácora",
+                    "reportes": "📊 Reportes"
+                }
+                st.session_state.selected = label_map.get(area_clicked, "📦 Pedidos")
+                st.rerun()
+
             for row in rows:
-                cols = st.columns(len(row))
-                for col, (label, value) in zip(cols, row):
-                    with col:
-                        if st.button(label, use_container_width=True):
-                            st.session_state.selected_area = value
-                            label_map = {
-                                "ventas": "📦 Pedidos",
-                                "almacen": "📦 Pedidos",
-                                "contabilidad": "📦 Pedidos",
-                                "rh": "📦 Pedidos",
-                                "admin": "📦 Pedidos",
-                                "pedidos": "📦 Pedidos",
-                                "bitacora": "📝 Bitácora",
-                                "reportes": "📊 Reportes"
-                            }
-                            st.session_state.selected = label_map.get(value, "📦 Pedidos")
-                            st.rerun()
-                st.markdown("<br>", unsafe_allow_html=True)
+                st.markdown("<div style='display: flex; justify-content: center; gap: 2rem;'>", unsafe_allow_html=True)
+                for label, value in row:
+                    button_html = f"""
+                    <form action="#" method="post">
+                        <button type="submit" name="area" value="{value}" 
+                            style="
+                                background-color: white;
+                                color: #0d47a1;
+                                font-size: 1.2rem;
+                                font-weight: 600;
+                                border: 2px solid #0d47a1;
+                                border-radius: 10px;
+                                padding: 1rem 2rem;
+                                cursor: pointer;
+                                width: 200px;
+                            ">{label}</button>
+                    </form>
+                    """
+                    st.markdown(button_html, unsafe_allow_html=True)
+                st.markdown("</div><br>", unsafe_allow_html=True)
 
     elif selected == "👤 Mi Perfil":
         with st.container():
