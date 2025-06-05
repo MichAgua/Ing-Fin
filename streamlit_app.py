@@ -105,13 +105,16 @@ with st.sidebar:
                         st.success("Usuario registrado correctamente.")
         else:
             if st.button("Iniciar sesión", use_container_width=True):
-                with Session(engine) as session:
-                    user = session.exec(select(User).where(User.username == username)).first()
-                    if not user or not bcrypt.verify(password, user.hashed_password):
-                        st.error("Credenciales incorrectas")
-                    else:
-                        st.session_state.user = user
-                        st.success(f"Bienvenido, {user.full_name} ({user.role})")
+                if not username or not password:
+                    st.warning("Por favor ingresa usuario y contraseña.")
+                else:
+                    with Session(engine) as session:
+                        user = session.exec(select(User).where(User.username == username)).first()
+                        if not user or not bcrypt.verify(password, user.hashed_password):
+                            st.error("Credenciales incorrectas")
+                        else:
+                            st.session_state.user = user
+                            st.success(f"Bienvenido, {user.full_name} ({user.role})")
 
 if st.session_state.user:
     st.sidebar.success(f"Sesión iniciada: {st.session_state.user.full_name}")
