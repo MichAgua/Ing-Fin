@@ -2,10 +2,6 @@ import streamlit as st
 from streamlit.components.v1 import html
 from sqlmodel import Session, select
 from app.database import engine
-from app.models.pedido import Pedido
-from app.models.user import User
-from app.models.bitacora import Bitacora
-from app.models.cotizacion import Cotizacion
 from passlib.hash import bcrypt
 from datetime import datetime
 import pandas as pd
@@ -13,6 +9,12 @@ import pandas as pd
 
 from sqlmodel import SQLModel
 SQLModel.metadata.create_all(engine)
+
+# Import models after metadata creation
+from app.models.pedido import Pedido
+from app.models.user import User
+from app.models.bitacora import Bitacora
+from app.models.cotizacion import Cotizacion
 
 st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
 
@@ -254,8 +256,6 @@ if st.session_state.user:
                 st.subheader("Lista de pedidos")
                 if role == "admin":
                     try:
-                        from sqlmodel import SQLModel
-                        SQLModel.metadata.create_all(engine)
                         pedidos = session.exec(select(Pedido)).all()
                         # --- AGREGADO: poblar pedidos si está vacío ---
                         if not pedidos:
@@ -297,8 +297,6 @@ if st.session_state.user:
                         pedidos = []
                 else:
                     try:
-                        from sqlmodel import SQLModel
-                        SQLModel.metadata.create_all(engine)
                         pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
                     except Exception as e:
                         st.error(f"⚠️ No se pudieron cargar los pedidos. Error: {e}")
@@ -350,16 +348,12 @@ if st.session_state.user:
             with Session(engine) as session:
                 if role == "admin":
                     try:
-                        from sqlmodel import SQLModel
-                        SQLModel.metadata.create_all(engine)
                         bitacora = session.exec(select(Bitacora)).all()
                     except Exception as e:
                         st.error(f"⚠️ No se pudo cargar la bitácora. Error: {e}")
                         bitacora = []
                 else:
                     try:
-                        from sqlmodel import SQLModel
-                        SQLModel.metadata.create_all(engine)
                         bitacora = session.exec(select(Bitacora).where(Bitacora.usuario_id == st.session_state.user.id)).all()
                     except Exception as e:
                         st.error(f"⚠️ No se pudo cargar la bitácora. Error: {e}")
