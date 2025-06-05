@@ -145,6 +145,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="ventas_btn", use_container_width=True):
                         st.session_state.selected_area = "ventas"
+                        st.session_state.selected = "🏠 Inicio"
                         st.rerun()
             with col2:
                 with st.container():
@@ -156,6 +157,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="almacen_btn", use_container_width=True):
                         st.session_state.selected_area = "almacen"
+                        st.session_state.selected = "🏠 Inicio"
                         st.rerun()
             with col3:
                 with st.container():
@@ -167,6 +169,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="contabilidad_btn", use_container_width=True):
                         st.session_state.selected_area = "contabilidad"
+                        st.session_state.selected = "🏠 Inicio"
                         st.rerun()
 
             col4, col5, col6 = st.columns(3)
@@ -180,6 +183,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="rh_btn", use_container_width=True):
                         st.session_state.selected_area = "rh"
+                        st.session_state.selected = "🏠 Inicio"
                         st.rerun()
             with col5:
                 with st.container():
@@ -191,6 +195,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="admin_btn", use_container_width=True):
                         st.session_state.selected_area = "admin"
+                        st.session_state.selected = "🏠 Inicio"
                         st.rerun()
             with col6:
                 # Pedidos button
