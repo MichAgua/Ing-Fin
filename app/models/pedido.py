@@ -1,7 +1,6 @@
 from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime
-from app.models.user import User  # solo aquí
 
 class Pedido(SQLModel, table=True):
     __tablename__ = "pedidos"
