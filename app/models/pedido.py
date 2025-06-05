@@ -2,6 +2,9 @@ from sqlmodel import SQLModel, Field
 from typing import Optional
 from datetime import datetime
 
+if TYPE_CHECKING:
+    from .user import User
+
 class Pedido(SQLModel, table=True):
     __tablename__ = "pedidos"  # ← AGREGA ESTA LÍNEA
     __table_args__ = {"extend_existing": True}  # ← OPCIONAL PERO ÚTIL
@@ -25,3 +28,5 @@ class Pedido(SQLModel, table=True):
     cierre: Optional[str] = None
     estampado: Optional[str] = None
     bordado: Optional[str] = None
+
+usuario: Optional["User"] = Relationship(back_populates="pedidos")
