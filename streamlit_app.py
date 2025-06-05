@@ -6,6 +6,7 @@ from app.models.user import User
 from app.models.pedido import Pedido
 from sqlmodel import SQLModel
 SQLModel.metadata.create_all(engine)
+
 from app.models.bitacora import Bitacora
 from app.models.cotizacion import Cotizacion  
 from passlib.hash import bcrypt
@@ -14,7 +15,6 @@ import pandas as pd
 
 st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
 
-# Global CSS styles
 st.markdown("""
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
