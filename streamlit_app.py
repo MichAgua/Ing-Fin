@@ -152,37 +152,21 @@ if st.session_state.user:
                 cols = st.columns(len(row))
                 for col, (label, value) in zip(cols, row):
                     with col:
-                        st.markdown(f"""
-                            <div style='background-color: white; border-radius: 10px; padding: 1.2rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center;'>
-                                <form action="" method="post">
-                                    <button type="submit" name="area" value="{value}" style="background-color: transparent; border: none; font-size: 1.2rem; cursor: pointer;">
-                                        {label}
-                                    </button>
-                                </form>
-                            </div>
-                        """, unsafe_allow_html=True)
+                        if st.button(label, use_container_width=True):
+                            st.session_state.selected_area = value
+                            label_map = {
+                                "ventas": "📦 Pedidos",
+                                "almacen": "📦 Pedidos",
+                                "contabilidad": "📦 Pedidos",
+                                "rh": "📦 Pedidos",
+                                "admin": "📦 Pedidos",
+                                "pedidos": "📦 Pedidos",
+                                "bitacora": "📝 Bitácora",
+                                "reportes": "📊 Reportes"
+                            }
+                            st.session_state.selected = label_map.get(value, "📦 Pedidos")
+                            st.rerun()
                 st.markdown("<br>", unsafe_allow_html=True)
-
-            # Capture user selection from form
-            import streamlit as stlit
-            from streamlit.runtime.scriptrunner import get_script_run_ctx
-
-            ctx = get_script_run_ctx()
-            if "area" in stlit.query_params:
-                selected_area = stlit.query_params["area"]
-                st.session_state.selected_area = selected_area
-                label_map = {
-                    "ventas": "📦 Pedidos",
-                    "almacen": "📦 Pedidos",
-                    "contabilidad": "📦 Pedidos",
-                    "rh": "📦 Pedidos",
-                    "admin": "📦 Pedidos",
-                    "pedidos": "📦 Pedidos",
-                    "bitacora": "📝 Bitácora",
-                    "reportes": "📊 Reportes"
-                }
-                st.session_state.selected = label_map.get(selected_area, "📦 Pedidos")
-                st.rerun()
 
     elif selected == "👤 Mi Perfil":
         with st.container():
