@@ -1,5 +1,6 @@
-from sqlmodel import SQLModel, Field
-from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional, List
+from app.models.pedido import Pedido  # importación directa
 
 class User(SQLModel, table=True):
     __tablename__ = "users"
@@ -10,3 +11,5 @@ class User(SQLModel, table=True):
     full_name: str
     hashed_password: str
     role: str
+
+    pedidos: List[Pedido] = Relationship(back_populates="usuario")

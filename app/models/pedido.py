@@ -1,13 +1,11 @@
-from sqlmodel import SQLModel, Field
+from sqlmodel import SQLModel, Field, Relationship
 from typing import Optional
 from datetime import datetime
-
-if TYPE_CHECKING:
-    from .user import User
+from app.models.user import User  # importación directa
 
 class Pedido(SQLModel, table=True):
-    __tablename__ = "pedidos"  # ← AGREGA ESTA LÍNEA
-    __table_args__ = {"extend_existing": True}  # ← OPCIONAL PERO ÚTIL
+    __tablename__ = "pedidos"
+    __table_args__ = {"extend_existing": True}
 
     id: Optional[int] = Field(default=None, primary_key=True)
     cliente: str
@@ -29,4 +27,4 @@ class Pedido(SQLModel, table=True):
     estampado: Optional[str] = None
     bordado: Optional[str] = None
 
-usuario: Optional["User"] = Relationship(back_populates="pedidos")
+    usuario: Optional[User] = Relationship(back_populates="pedidos")
