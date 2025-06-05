@@ -1,7 +1,5 @@
 import streamlit as st
 from streamlit.components.v1 import html
-from streamlit_extras.switch_page_button import switch_page
-from streamlit_extras.stylable_container import stylable_container
 from sqlmodel import Session, select
 from app.database import engine
 from app.models.user import User
