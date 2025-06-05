@@ -14,10 +14,21 @@ st.set_page_config(page_title="Sistema de Uniformes", layout="wide")
 
 # Global CSS styles
 st.markdown("""
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <style>
     .stApp {
         background-color: #f5f7fa;
-        font-family: 'Segoe UI', sans-serif;
+        font-family: 'Roboto', sans-serif;
+    }
+    h2, h3 {
+        font-size: 2.2rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+    p {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #444;
     }
     .stButton>button {
         border-radius: 6px;
@@ -33,33 +44,35 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Sleek welcome section
-with st.container():
-    st.markdown("<h2 style='color: #333; font-weight: 700;'>🛡️ Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #666; font-weight: 500; margin-bottom: 1.5rem;'>De acuerdo al área en el que trabajes, podrás administrar pedidos, crear cotizaciones, modificar órdenes y trabajar de manera eficiente.</p>", unsafe_allow_html=True)
+# Sleek welcome section (only show if not logged in)
+if st.session_state.user is None:
+    # Sleek welcome section
+    with st.container():
+        st.markdown("<h2 style='color: #333; font-weight: 700;'>🛡️ Alfa Uniformes - Sistema General</h2>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #666; font-weight: 500; margin-bottom: 1.5rem;'>De acuerdo al área en el que trabajes, podrás administrar pedidos, crear cotizaciones, modificar órdenes y trabajar de manera eficiente.</p>", unsafe_allow_html=True)
 
-    # Improved Emoji rotation area in main page (Streamlit Cloud compatible)
-    emoji_list = ["📦", "📄", "📋", "👷", "✂️", "🧾"]
-    emoji_script = """
-<div style='text-align: center; margin-top: 3rem;'>
-  <div id='emoji-rotator' style='font-size: 6rem;'>📦</div>
-  <div style='color: #0d6efd; font-size: 1.8rem; font-weight: 700; margin-top: 1rem;'>
-    Sistema seguro y eficiente para la gestión de uniformes.
-  </div>
-</div>
-<script>
-  const emojis = ["📦", "📄", "📋", "👷", "✂️", "🧾"];
-  let idx = 0;
-  setInterval(() => {
-    const container = document.getElementById("emoji-rotator");
-    if (container) {
-      idx = (idx + 1) % emojis.length;
-      container.innerHTML = emojis[idx];
-    }
-  }, 5000);  // Change every 5 seconds
-</script>
-"""
-    st.markdown(emoji_script, unsafe_allow_html=True)
+        # Improved Emoji rotation area
+        emoji_list = ["📦", "📄", "📋", "👷", "✂️", "🧾"]
+        emoji_script = """
+        <div style='text-align: center; margin-top: 3rem;'>
+          <div id='emoji-rotator' style='font-size: 6rem;'>📦</div>
+          <div style='color: #0d6efd; font-size: 1.8rem; font-weight: 700; margin-top: 1rem;'>
+            Sistema seguro y eficiente para la gestión de uniformes.
+          </div>
+        </div>
+        <script>
+          const emojis = ["📦", "📄", "📋", "👷", "✂️", "🧾"];
+          let idx = 0;
+          setInterval(() => {
+            const container = document.getElementById("emoji-rotator");
+            if (container) {
+              idx = (idx + 1) % emojis.length;
+              container.innerHTML = emojis[idx];
+            }
+          }, 5000);
+        </script>
+        """
+        st.markdown(emoji_script, unsafe_allow_html=True)
 
 if "user" not in st.session_state:
     st.session_state.user = None
@@ -102,6 +115,8 @@ with st.sidebar:
 
 if st.session_state.user:
     st.sidebar.success(f"Sesión iniciada: {st.session_state.user.full_name}")
+    # Botón para cerrar sesión
+    st.sidebar.button("🔓 Cerrar sesión", on_click=lambda: st.session_state.pop("user"))
     role = st.session_state.user.role
     allowed_modules = ["🏠 Inicio", "👤 Mi Perfil", "📦 Pedidos", "📝 Bitácora"]
     if role == "admin":
@@ -111,13 +126,83 @@ if st.session_state.user:
 
     if selected == "🏠 Inicio":
         with st.container():
-            st.markdown("<h3 style='color: #333; font-weight: 700; margin-bottom: 0.5rem;'>🏠 Bienvenido</h3>", unsafe_allow_html=True)
-            st.write("Selecciona una opción del menú para comenzar.")
-        st.markdown("---")
+            st.markdown("""
+                <div style='background: linear-gradient(to right, #e3f2fd, #fff); padding: 2rem; border-radius: 10px;'>
+                    <h3 style='color: #0d47a1; font-weight: 800; font-size: 2.2rem; margin-bottom: 0.2rem;'>🏠 Bienvenido a Alfa Uniformes</h3>
+                    <p style='font-size:1.3rem; color: #333;'>Selecciona el área con la que deseas trabajar:</p>
+                </div>
+            """, unsafe_allow_html=True)
+
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>👕</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Ventas</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="ventas_btn", use_container_width=True):
+                        st.session_state.selected_area = "ventas"
+                        st.experimental_rerun()
+            with col2:
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>📦</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Almacén</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="almacen_btn", use_container_width=True):
+                        st.session_state.selected_area = "almacen"
+                        st.experimental_rerun()
+            with col3:
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>🧾</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Contabilidad</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="contabilidad_btn", use_container_width=True):
+                        st.session_state.selected_area = "contabilidad"
+                        st.experimental_rerun()
+
+            col4, col5 = st.columns(2)
+            with col4:
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>👥</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Recursos Humanos</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="rh_btn", use_container_width=True):
+                        st.session_state.selected_area = "rh"
+                        st.experimental_rerun()
+            with col5:
+                with st.container():
+                    st.markdown("""
+                        <div style='text-align:center; background-color:#ffffff; padding:1.5rem; border-radius:10px; border: 1px solid #ddd; box-shadow:0 2px 6px rgba(0,0,0,0.05); cursor:pointer;'>
+                            <div style='font-size:2rem;'>🛠️</div>
+                            <div style='font-size:1.1rem; font-weight:600; margin-top:0.5rem;'>Admin</div>
+                        </div>
+                    """, unsafe_allow_html=True)
+                    if st.button("", key="admin_btn", use_container_width=True):
+                        st.session_state.selected_area = "admin"
+                        st.experimental_rerun()
+
+            st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
 
     elif selected == "👤 Mi Perfil":
         with st.container():
-            st.markdown("<h3 style='color: #333; font-weight: 700; margin-bottom: 0.5rem;'>👤 Mi Perfil</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: linear-gradient(to right, #e3f2fd, #fff); padding: 2rem; border-radius: 10px;'>
+                    <h3 style='color: #0d47a1; font-weight: 800; font-size: 2.2rem; margin-bottom: 0.2rem;'>👤 Mi Perfil</h3>
+                    <p style='font-size:1.3rem; color: #333;'>Revisa la información personal del usuario activo.</p>
+                </div>
+            """, unsafe_allow_html=True)
             profile_data = {
                 "Campo": ["ID", "Usuario", "Nombre completo", "Rol"],
                 "Valor": [
@@ -133,29 +218,53 @@ if st.session_state.user:
 
     elif selected == "📦 Pedidos":
         with st.container():
-            st.markdown("<h3 style='color: #333; font-weight: 700; margin-bottom: 1rem;'>📦 Gestión de Pedidos</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: linear-gradient(to right, #e3f2fd, #fff); padding: 2rem; border-radius: 10px;'>
+                    <h3 style='color: #0d47a1; font-weight: 800; font-size: 2.2rem; margin-bottom: 0.2rem;'>📦 Gestión de Pedidos</h3>
+                    <p style='font-size:1.3rem; color: #333;'>Crea, visualiza y administra pedidos de uniformes.</p>
+                </div>
+            """, unsafe_allow_html=True)
             with Session(engine) as session:
                 if role in ["ventas", "admin"]:
                     st.subheader("Crear nuevo pedido")
-                    cliente = st.text_input("Nombre del cliente")
-                    if st.button("Crear pedido", use_container_width=True) and cliente:
-                        nuevo = Pedido(
-                            cliente=cliente,
-                            usuario_id=st.session_state.user.id,
-                            fecha=datetime.utcnow(),
-                            status="pendiente"
-                        )
-                        session.add(nuevo)
-                        session.commit()
-                        bit = Bitacora(
-                            pedido_id=nuevo.id,
-                            usuario_id=nuevo.usuario_id,
-                            accion="Pedido creado",
-                            timestamp=datetime.utcnow()
-                        )
-                        session.add(bit)
-                        session.commit()
-                        st.success("Pedido creado")
+                    with st.form("crear_pedido"):
+                        cliente = st.text_input("Nombre del Cliente")
+                        direccion = st.text_input("Dirección del Cliente")
+                        es_muestra = st.radio("¿Es muestra o pedido?", ["Muestra", "Pedido"])
+                        prenda = st.selectbox("Tipo de prenda", ["Camisa", "Pantalón", "Chamarra", "Chaleco"])
+                        tela = st.selectbox("Tipo de tela", ["Mezclilla", "Kakhi", "Poliéster"])
+                        color = st.text_input("Color de la tela")
+                        talla = st.text_input("Talla")
+                        cantidad = st.number_input("Cantidad de prendas", min_value=1, value=1)
+                        fecha_entrega = st.date_input("Fecha estimada de entrega")
+
+                        st.markdown("### Materiales")
+                        boton = st.selectbox("Tipo de botón", ["Plástico", "Metal", "Nácar"])
+                        cierre = st.selectbox("Tipo de cierre", ["Nylon", "Metálico", "Velcro"])
+                        estampado = st.selectbox("Estampado", ["Ninguno", "Serigrafía", "Sublimado"])
+                        bordado = st.selectbox("Bordado", ["Ninguno", "Logo empresa", "Nombre empleado"])
+
+                        submitted = st.form_submit_button("Crear pedido")
+
+                        if submitted:
+                            precio_unitario = {"Camisa": 100, "Pantalón": 200, "Chamarra": 300, "Chaleco": 150}[prenda]
+                            nuevo = Pedido(
+                                cliente=cliente,
+                                usuario_id=st.session_state.user.id,
+                                fecha=datetime.utcnow(),
+                                status="pendiente"
+                            )
+                            session.add(nuevo)
+                            session.commit()
+                            bit = Bitacora(
+                                pedido_id=nuevo.id,
+                                usuario_id=nuevo.usuario_id,
+                                accion="Pedido creado",
+                                timestamp=datetime.utcnow()
+                            )
+                            session.add(bit)
+                            session.commit()
+                            st.success("Pedido creado correctamente.")
                     st.markdown("---")
 
                 st.subheader("Lista de pedidos")
@@ -165,34 +274,48 @@ if st.session_state.user:
                     pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
 
                 for p in pedidos:
-                    cols = st.columns([4, 2, 2])
-                    with cols[0]:
-                        status_color = {
-                            "aprobado": "#198754",
-                            "pendiente": "#0d6efd",
-                            "rechazado": "#dc3545"
-                        }.get(p.status, "#6c757d")
-                        st.markdown(f"**Pedido #{p.id}** — Cliente: {p.cliente} — Fecha: {p.fecha.strftime('%Y-%m-%d')} — Estado: <span style='color:{status_color}; font-weight:600;'>{p.status.capitalize()}</span>", unsafe_allow_html=True)
-                    if role == "admin":
-                        with cols[1]:
-                            if st.button(f" Aprobar #{p.id}", use_container_width=True):
-                                p.status = "aprobado"
-                                session.add(p)
-                                session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido aprobado", timestamp=datetime.utcnow()))
-                                session.commit()
-                                st.experimental_rerun()
-                        with cols[2]:
-                            if st.button(f" Rechazar #{p.id}", use_container_width=True):
-                                p.status = "rechazado"
-                                session.add(p)
-                                session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido rechazado", timestamp=datetime.utcnow()))
-                                session.commit()
-                                st.experimental_rerun()
+                    with st.expander(f"📦 Pedido #{p.id} — Cliente: {p.cliente} — Fecha: {p.fecha.strftime('%Y-%m-%d')} — Estado: {p.status.capitalize()}"):
+                        st.markdown(f"**Dirección del Cliente:** {p.direccion if hasattr(p, 'direccion') else 'N/D'}")
+                        st.markdown(f"**Tipo de Pedido:** {'Muestra' if getattr(p, 'es_muestra', False) else 'Pedido'}")
+                        st.markdown(f"**Prenda:** {getattr(p, 'prenda', 'N/D')} — **Tela:** {getattr(p, 'tela', 'N/D')} — **Color:** {getattr(p, 'color', 'N/D')}")
+                        st.markdown(f"**Talla:** {getattr(p, 'talla', 'N/D')} — **Cantidad:** {getattr(p, 'cantidad', 'N/D')}")
+                        st.markdown(f"**Fecha Estimada de Entrega:** {getattr(p, 'fecha_entrega', 'N/D')}")
+                        st.markdown("**Materiales:**")
+                        st.markdown(f"- Botón: {getattr(p, 'boton', 'N/D')}")
+                        st.markdown(f"- Cierre: {getattr(p, 'cierre', 'N/D')}")
+                        st.markdown(f"- Estampado: {getattr(p, 'estampado', 'N/D')}")
+                        st.markdown(f"- Bordado: {getattr(p, 'bordado', 'N/D')}")
+
+                        precio_unitario = {"Camisa": 100, "Pantalón": 200, "Chamarra": 300, "Chaleco": 150}.get(getattr(p, "prenda", ""), 0)
+                        cantidad = getattr(p, "cantidad", 1)
+                        st.markdown(f"**Costo estimado:** ${precio_unitario * cantidad} MXN")
+
+                        if role == "admin":
+                            cols = st.columns(2)
+                            with cols[0]:
+                                if st.button(f"✅ Aprobar #{p.id}", key=f"aprobar_{p.id}"):
+                                    p.status = "aprobado"
+                                    session.add(p)
+                                    session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido aprobado", timestamp=datetime.utcnow()))
+                                    session.commit()
+                                    st.experimental_rerun()
+                            with cols[1]:
+                                if st.button(f"❌ Rechazar #{p.id}", key=f"rechazar_{p.id}"):
+                                    p.status = "rechazado"
+                                    session.add(p)
+                                    session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido rechazado", timestamp=datetime.utcnow()))
+                                    session.commit()
+                                    st.experimental_rerun()
         st.markdown("---")
 
     elif selected == "📝 Bitácora":
         with st.container():
-            st.markdown("<h3 style='color: #333; font-weight: 700; margin-bottom: 1rem;'>📝 Historial de Acciones</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: linear-gradient(to right, #e3f2fd, #fff); padding: 2rem; border-radius: 10px;'>
+                    <h3 style='color: #0d47a1; font-weight: 800; font-size: 2.2rem; margin-bottom: 0.2rem;'>📝 Historial de Acciones</h3>
+                    <p style='font-size:1.3rem; color: #333;'>Consulta las acciones recientes relacionadas con pedidos.</p>
+                </div>
+            """, unsafe_allow_html=True)
             with Session(engine) as session:
                 if role == "admin":
                     bitacora = session.exec(select(Bitacora)).all()
@@ -204,7 +327,12 @@ if st.session_state.user:
 
     elif selected == "📊 Reportes":
         with st.container():
-            st.markdown("<h3 style='color: #333; font-weight: 700; margin-bottom: 1rem; text-align:center;'>📊 Dashboard de Reportes</h3>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='background: linear-gradient(to right, #e3f2fd, #fff); padding: 2rem; border-radius: 10px;'>
+                    <h3 style='color: #0d47a1; font-weight: 800; font-size: 2.2rem; margin-bottom: 0.2rem;'>📊 Dashboard de Reportes</h3>
+                    <p style='font-size:1.3rem; color: #333;'>Análisis visual de pedidos por estado, usuario y fecha.</p>
+                </div>
+            """, unsafe_allow_html=True)
             with Session(engine) as session:
                 pedidos = session.exec(select(Pedido)).all()
                 if pedidos:

@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit import session_state as state
 
 # Simulamos una "base de datos" de usuarios
 USUARIOS = {
@@ -9,8 +10,8 @@ USUARIOS = {
 
 st.set_page_config(page_title="Sistema de Uniformes")
 
-# Título
-st.title("Sistema de Gestión de Pedidos de Uniformes")
+if not state.logged_in:
+    st.title("Sistema de Gestión de Pedidos de Uniformes")
 
 # Sidebar con login
 st.sidebar.title("Inicio de sesión")
@@ -18,24 +19,39 @@ st.sidebar.title("Inicio de sesión")
 usuario = st.sidebar.text_input("Usuario (número de empleado)")
 password = st.sidebar.text_input("Contraseña", type="password")
 
-# Botón para iniciar sesión
-if st.sidebar.button("Iniciar sesión"):
-    if usuario in USUARIOS and USUARIOS[usuario]["password"] == password:
-        st.success(f"Bienvenido, usuario {usuario} ({USUARIOS[usuario]['rol']})")
+if "logged_in" not in state:
+    state.logged_in = False
+    state.usuario = None
 
-        rol = USUARIOS[usuario]["rol"]
-
-        # Muestra pantallas distintas según el rol
-        if rol == "ventas":
-            st.subheader("Panel de Ventas")
-            st.write("Aquí podrás ver y aprobar pedidos.")
-        elif rol == "trazo":
-            st.subheader("Panel de Trazo")
-            st.write("Aquí verás especificaciones para producción.")
-        elif rol == "maestro":
-            st.subheader("Panel Maestro")
-            st.write("Acceso completo a todos los módulos.")
+if not state.logged_in:
+    if st.sidebar.button("Iniciar sesión"):
+        if usuario in USUARIOS and USUARIOS[usuario]["password"] == password:
+            state.logged_in = True
+            state.usuario = usuario
+            st.experimental_rerun()
         else:
-            st.warning("Rol no reconocido.")
+            st.error("Usuario o contraseña incorrectos.")
+
+if state.logged_in:
+    usuario = state.usuario
+    rol = USUARIOS[usuario]["rol"]
+    st.sidebar.success(f"Sesión iniciada como {usuario} ({rol})")
+    if st.sidebar.button("Cerrar sesión"):
+        state.logged_in = False
+        state.usuario = None
+        st.experimental_rerun()
+
+    st.success(f"Bienvenido, usuario {usuario} ({rol})")
+
+    # Muestra pantallas distintas según el rol
+    if rol == "ventas":
+        st.subheader("Panel de Ventas")
+        st.write("Aquí podrás ver y aprobar pedidos.")
+    elif rol == "trazo":
+        st.subheader("Panel de Trazo")
+        st.write("Aquí verás especificaciones para producción.")
+    elif rol == "maestro":
+        st.subheader("Panel Maestro")
+        st.write("Acceso completo a todos los módulos.")
     else:
-        st.error("Usuario o contraseña incorrectos.")
+        st.warning("Rol no reconocido.")
