@@ -145,7 +145,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="ventas_btn", use_container_width=True):
                         st.session_state.selected_area = "ventas"
-                        st.experimental_rerun()
+                        st.rerun()
             with col2:
                 with st.container():
                     st.markdown("""
@@ -156,7 +156,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="almacen_btn", use_container_width=True):
                         st.session_state.selected_area = "almacen"
-                        st.experimental_rerun()
+                        st.rerun()
             with col3:
                 with st.container():
                     st.markdown("""
@@ -167,7 +167,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="contabilidad_btn", use_container_width=True):
                         st.session_state.selected_area = "contabilidad"
-                        st.experimental_rerun()
+                        st.rerun()
 
             col4, col5 = st.columns(2)
             with col4:
@@ -180,7 +180,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="rh_btn", use_container_width=True):
                         st.session_state.selected_area = "rh"
-                        st.experimental_rerun()
+                        st.rerun()
             with col5:
                 with st.container():
                     st.markdown("""
@@ -191,7 +191,7 @@ if st.session_state.user:
                     """, unsafe_allow_html=True)
                     if st.button("", key="admin_btn", use_container_width=True):
                         st.session_state.selected_area = "admin"
-                        st.experimental_rerun()
+                        st.rerun()
 
             st.markdown("<hr style='margin-top: 2rem; margin-bottom: 1rem;'>", unsafe_allow_html=True)
 
@@ -298,14 +298,14 @@ if st.session_state.user:
                                     session.add(p)
                                     session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido aprobado", timestamp=datetime.utcnow()))
                                     session.commit()
-                                    st.experimental_rerun()
+                                    st.rerun()
                             with cols[1]:
                                 if st.button(f"❌ Rechazar #{p.id}", key=f"rechazar_{p.id}"):
                                     p.status = "rechazado"
                                     session.add(p)
                                     session.add(Bitacora(pedido_id=p.id, usuario_id=st.session_state.user.id, accion="Pedido rechazado", timestamp=datetime.utcnow()))
                                     session.commit()
-                                    st.experimental_rerun()
+                                    st.rerun()
         st.markdown("---")
 
     elif selected == "📝 Bitácora":
