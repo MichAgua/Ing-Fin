@@ -248,15 +248,19 @@ if st.session_state.user:
                 st.subheader("Lista de pedidos")
                 if role == "admin":
                     try:
+                        from sqlmodel import SQLModel
+                        SQLModel.metadata.create_all(engine)
                         pedidos = session.exec(select(Pedido)).all()
                     except Exception as e:
-                        st.error("⚠️ No se pudieron cargar los pedidos. Verifica que las tablas estén correctamente creadas.")
+                        st.error(f"⚠️ No se pudieron cargar los pedidos. Error: {e}")
                         pedidos = []
                 else:
                     try:
+                        from sqlmodel import SQLModel
+                        SQLModel.metadata.create_all(engine)
                         pedidos = session.exec(select(Pedido).where(Pedido.usuario_id == st.session_state.user.id)).all()
                     except Exception as e:
-                        st.error("⚠️ No se pudieron cargar los pedidos. Verifica que las tablas estén correctamente creadas.")
+                        st.error(f"⚠️ No se pudieron cargar los pedidos. Error: {e}")
                         pedidos = []
 
                 for p in pedidos:
@@ -305,15 +309,19 @@ if st.session_state.user:
             with Session(engine) as session:
                 if role == "admin":
                     try:
+                        from sqlmodel import SQLModel
+                        SQLModel.metadata.create_all(engine)
                         bitacora = session.exec(select(Bitacora)).all()
                     except Exception as e:
-                        st.error("⚠️ No se pudo cargar la bitácora. Verifica que las tablas estén correctamente creadas.")
+                        st.error(f"⚠️ No se pudo cargar la bitácora. Error: {e}")
                         bitacora = []
                 else:
                     try:
+                        from sqlmodel import SQLModel
+                        SQLModel.metadata.create_all(engine)
                         bitacora = session.exec(select(Bitacora).where(Bitacora.usuario_id == st.session_state.user.id)).all()
                     except Exception as e:
-                        st.error("⚠️ No se pudo cargar la bitácora. Verifica que las tablas estén correctamente creadas.")
+                        st.error(f"⚠️ No se pudo cargar la bitácora. Error: {e}")
                         bitacora = []
                 for b in bitacora:
                     st.markdown(f"📅 {b.timestamp.strftime('%Y-%m-%d %H:%M:%S')} — Pedido #{b.pedido_id} — Acción: {b.accion}")
