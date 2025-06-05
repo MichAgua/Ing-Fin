@@ -251,6 +251,40 @@ if st.session_state.user:
                         from sqlmodel import SQLModel
                         SQLModel.metadata.create_all(engine)
                         pedidos = session.exec(select(Pedido)).all()
+                        # --- AGREGADO: poblar pedidos si está vacío ---
+                        if not pedidos:
+                            import random
+                            empresas = ["Coca Cola", "SIAPA", "Akron"]
+                            prendas = ["Camisa", "Pantalón", "Chamarra"]
+                            telas = ["Mezclilla", "Kakhi", "Poliéster"]
+
+                            for empresa in empresas:
+                                nuevo = Pedido(
+                                    cliente=empresa,
+                                    direccion=f"{empresa} dirección",
+                                    es_muestra=random.choice([True, False]),
+                                    prenda=random.choice(prendas),
+                                    tipo_tela=random.choice(telas),
+                                    color="Azul",
+                                    talla="M",
+                                    cantidad=random.randint(10, 100),
+                                    costo_estimado=random.uniform(1000, 5000),
+                                    explosion_materiales="Botón: Plástico, Cierre: Nylon",
+                                    fecha_entrega=datetime(2025, 7, 1),
+                                    usuario_id=st.session_state.user.id,
+                                    fecha=datetime.utcnow(),
+                                    status="pendiente"
+                                )
+                                session.add(nuevo)
+                                session.add(Bitacora(
+                                    pedido_id=nuevo.id,
+                                    usuario_id=nuevo.usuario_id,
+                                    accion="Pedido creado automáticamente",
+                                    timestamp=datetime.utcnow()
+                                ))
+                            session.commit()
+                            pedidos = session.exec(select(Pedido)).all()
+                        # --- FIN AGREGADO ---
                     except Exception as e:
                         st.error(f"⚠️ No se pudieron cargar los pedidos. Error: {e}")
                         pedidos = []
